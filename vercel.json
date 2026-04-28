@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/email-system/Email%20Builder.html" }
+  ]
+}
