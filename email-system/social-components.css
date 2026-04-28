@@ -1,0 +1,454 @@
+/* =============================================================
+   Exit1.dev — Social Post Builder Styles
+   Same visual DNA as email-components.css
+   ============================================================= */
+
+/* ── Social workspace overrides ── */
+.social-workspace {
+  display: grid;
+  grid-template-columns: 260px 1fr 320px;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ── Format palette (left) ── */
+.sp-palette {
+  background: var(--ed-panel);
+  border-right: 1px solid var(--ed-border);
+  overflow-y: auto;
+  padding: 16px;
+  box-sizing: border-box;
+}
+.sp-section-title {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ed-text-dim);
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+.sp-format-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 20px;
+}
+.sp-format-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 11px;
+  background: var(--ed-panel-2);
+  border: 1px solid var(--ed-border);
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ed-text-mute);
+  transition: border-color 120ms, color 120ms;
+  user-select: none;
+}
+.sp-format-item:hover { border-color: var(--ed-border-strong); color: var(--ed-text); }
+.sp-format-item.active {
+  border-color: var(--ed-accent);
+  color: var(--ed-text);
+  background: rgba(56,114,255,0.07);
+}
+.sp-format-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--ed-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.sp-format-meta { line-height: 1.2; }
+.sp-format-label { font-size: 12px; font-weight: 500; }
+.sp-format-dim { font-size: 10px; color: var(--ed-text-dim); margin-top: 1px; }
+
+/* ── Template grid ── */
+.sp-template-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.sp-template-card {
+  padding: 10px;
+  background: var(--ed-panel-2);
+  border: 1px solid var(--ed-border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 120ms;
+  user-select: none;
+}
+.sp-template-card:hover { border-color: var(--ed-border-strong); }
+.sp-template-card.active {
+  border-color: var(--ed-accent);
+  background: rgba(56,114,255,0.06);
+}
+.sp-template-thumb {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 5px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--ed-border);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.sp-template-name { font-size: 11px; font-weight: 600; color: var(--ed-text); }
+.sp-template-desc { font-size: 10px; color: var(--ed-text-dim); margin-top: 1px; line-height: 1.3; }
+
+/* ── Canvas area (center) ── */
+.sp-canvas-wrap {
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 32px 24px 80px;
+  background:
+    linear-gradient(rgba(255,255,255,0.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.032) 1px, transparent 1px),
+    radial-gradient(900px 500px at 50% -80px, rgba(56,114,255,0.07), transparent 65%),
+    var(--ed-bg);
+  background-size: 48px 48px, 48px 48px, auto, auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.sp-canvas-meta {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ed-text-dim);
+}
+.sp-canvas-outer {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 40px 100px -20px rgba(0,0,0,0.8);
+}
+
+/* ── Carousel controls ── */
+.sp-carousel-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+.sp-carousel-btn {
+  background: var(--ed-panel);
+  border: 1px solid var(--ed-border);
+  color: var(--ed-text);
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+}
+.sp-carousel-btn:hover { background: var(--ed-panel-2); border-color: var(--ed-border-strong); }
+.sp-carousel-btn:disabled { opacity: 0.35; cursor: default; }
+.sp-carousel-label {
+  font-size: 12px;
+  color: var(--ed-text-mute);
+  min-width: 60px;
+  text-align: center;
+}
+
+/* ── Inspector (right) ── */
+.sp-inspector {
+  background: var(--ed-panel);
+  border-left: 1px solid var(--ed-border);
+  overflow-y: auto;
+  min-height: 0;
+  height: 100%;
+  box-sizing: border-box;
+}
+.sp-inspector-header {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--ed-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.sp-inspector-header h2 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+.sp-inspector-body { padding: 16px; }
+.sp-export-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background: var(--ed-accent);
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  margin-bottom: 6px;
+  text-align: center;
+}
+.sp-export-btn:hover { background: #5a8bff; }
+.sp-export-btn:disabled { opacity: 0.5; cursor: default; }
+.sp-export-btn.ghost {
+  background: transparent;
+  border: 1px solid var(--ed-border);
+  color: var(--ed-text-mute);
+}
+.sp-export-btn.ghost:hover { background: var(--ed-panel-2); color: var(--ed-text); border-color: var(--ed-border-strong); }
+.sp-slide-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.sp-slide-controls span {
+  flex: 1;
+  font-size: 12px;
+  color: var(--ed-text-mute);
+  text-align: center;
+}
+
+/* ── The actual post canvas shell ── */
+.sp-canvas {
+  position: relative;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  /* Grid + blue top glow + pure black */
+  background:
+    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px),
+    radial-gradient(80% 60% at 50% -5%, rgba(56,114,255,0.18), transparent 70%),
+    #000000;
+  background-size: 48px 48px, 48px 48px, auto, auto;
+  color: #ffffff;
+}
+
+/* ── Logo watermark ── */
+.sp-logo-mark {
+  position: absolute;
+  bottom: 28px;
+  right: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #000000;
+  font-family: "Space Mono", ui-monospace, monospace;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.1), 0 4px 16px rgba(0,0,0,0.5);
+  z-index: 10;
+  user-select: none;
+}
+
+/* ── Template: Announcement ── */
+.spt-announcement {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 60px 80px; box-sizing: border-box;
+  text-align: center;
+}
+.spt-eyebrow {
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.spt-headline {
+  font-size: 56px; font-weight: 700;
+  line-height: 1.05; letter-spacing: -0.03em;
+  color: #ffffff; margin-bottom: 20px;
+}
+.spt-sub {
+  font-size: 22px; line-height: 1.5;
+  color: rgba(255,255,255,0.65);
+  max-width: 640px; margin-bottom: 36px;
+}
+.spt-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 32px; border-radius: 9999px;
+  font-size: 16px; font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.1), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+/* ── Template: Quote ── */
+.spt-quote {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  align-items: flex-start; justify-content: center;
+  padding: 80px; box-sizing: border-box;
+}
+.spt-quote-mark {
+  font-size: 120px; line-height: 0.6;
+  font-weight: 700; opacity: 0.15;
+  margin-bottom: 24px;
+  font-family: Georgia, serif;
+}
+.spt-quote-text {
+  font-size: 40px; font-weight: 600;
+  line-height: 1.25; letter-spacing: -0.02em;
+  color: #ffffff; margin-bottom: 40px;
+  max-width: 800px;
+}
+.spt-quote-attr {
+  display: flex; align-items: center; gap: 16px;
+}
+.spt-quote-avatar {
+  width: 52px; height: 52px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; font-weight: 700;
+  color: #000; flex-shrink: 0;
+}
+.spt-quote-author { font-size: 17px; font-weight: 600; color: #fff; }
+.spt-quote-role { font-size: 14px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+
+/* ── Template: Big Metric ── */
+.spt-metric {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 60px; box-sizing: border-box; text-align: center;
+}
+.spt-metric-value {
+  font-size: 160px; font-weight: 700;
+  line-height: 1; letter-spacing: -0.06em;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 16px;
+}
+.spt-metric-label {
+  font-size: 28px; font-weight: 600;
+  color: #ffffff; margin-bottom: 12px;
+}
+.spt-metric-sub {
+  font-size: 18px; color: rgba(255,255,255,0.5);
+  max-width: 500px; line-height: 1.5;
+}
+
+/* ── Template: Feature List ── */
+.spt-features {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  padding: 72px 80px; box-sizing: border-box;
+}
+.spt-features-headline {
+  font-size: 48px; font-weight: 700;
+  line-height: 1.1; letter-spacing: -0.025em;
+  color: #ffffff; margin-bottom: 40px;
+}
+.spt-feature-item {
+  display: flex; align-items: flex-start; gap: 18px;
+  margin-bottom: 24px;
+}
+.spt-feature-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  flex-shrink: 0; margin-top: 8px;
+}
+.spt-feature-text {
+  font-size: 22px; color: rgba(255,255,255,0.75);
+  line-height: 1.45;
+}
+
+/* ── Template: Two-Col Stats ── */
+.spt-twocol {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  padding: 60px 72px; box-sizing: border-box;
+}
+.spt-twocol-headline {
+  font-size: 36px; font-weight: 700;
+  letter-spacing: -0.02em; color: #fff;
+  margin-bottom: 32px; text-align: center;
+}
+.spt-stat-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.spt-stat-card {
+  background: rgba(18,18,20,0.85);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 14px;
+  padding: 28px 24px;
+  box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.12);
+}
+.spt-stat-val {
+  font-size: 52px; font-weight: 700;
+  letter-spacing: -0.04em; color: #fff;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 6px;
+}
+.spt-stat-lbl {
+  font-size: 14px; font-weight: 600;
+  color: rgba(255,255,255,0.45);
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
+
+/* ── Template: Status Update ── */
+.spt-status {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  padding: 80px; box-sizing: border-box;
+}
+.spt-status-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 8px 18px; border-radius: 9999px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.05);
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 32px; align-self: flex-start;
+}
+.spt-status-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+}
+.spt-status-headline {
+  font-size: 52px; font-weight: 700;
+  line-height: 1.08; letter-spacing: -0.03em;
+  color: #fff; margin-bottom: 20px;
+}
+.spt-status-body {
+  font-size: 22px; line-height: 1.55;
+  color: rgba(255,255,255,0.6);
+  max-width: 680px;
+}
+
+/* Landscape template adjustments (for 1200×630 formats) */
+.sp-canvas.landscape .spt-headline { font-size: 64px; }
+.sp-canvas.landscape .spt-metric-value { font-size: 120px; }
+.sp-canvas.landscape .spt-quote-text { font-size: 36px; }
+.sp-canvas.landscape .spt-features-headline { font-size: 42px; }
+.sp-canvas.landscape .spt-feature-text { font-size: 20px; }
+.sp-canvas.landscape .spt-feature-item { margin-bottom: 18px; }
+.sp-canvas.landscape .spt-status-headline { font-size: 46px; }

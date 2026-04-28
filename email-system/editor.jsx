@@ -973,7 +973,7 @@ const ExportModal = ({ content, type, name, onClose }) => {
 /* ════════════════════════════════════════════
    APP
    ════════════════════════════════════════════ */
-const App = () => {
+const EmailApp = ({ view, setView }) => {
   const [draft,      setDraft]      = useState(loadDraft);
   const [selectedId, setSelectedId] = useState(null);
   const [modal,      setModal]      = useState(null); // {type,content}
@@ -1035,7 +1035,10 @@ const App = () => {
         <span className="topbar-brand">
           <span className="mark">e_</span> exit1.dev
         </span>
-        <span className="topbar-title">Email Builder</span>
+        <div className="view-tabs">
+          <button className={`view-tab${view==='email'?' active':''}`} onClick={e=>{e.stopPropagation();setView('email');}}>Email</button>
+          <button className={`view-tab${view==='social'?' active':''}`} onClick={e=>{e.stopPropagation();setView('social');}}>Social</button>
+        </div>
         {/* Plan indicator */}
         <span style={{
           display:'inline-flex',alignItems:'center',gap:6,
@@ -1114,4 +1117,4 @@ const App = () => {
   );
 };
 
-ReactDOM.createRoot(document.getElementById('app')).render(<App />);
+// Root mount moved to Email Builder.html
