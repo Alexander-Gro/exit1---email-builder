@@ -384,7 +384,7 @@ const generateInlineHtml = (draft) => {
     <!--[if mso]></tr></table><![endif]-->
   </td></tr>
 </table>`;
-    }
+
       case 'announcement': {
         const bc = ({accent:accent,green:'#3FB873',amber:'#E3B24A',red:'#E24530'})[d.badgeStyle]||accent;
         let h = '<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="'+BG+'" style="background:'+BG+';border-bottom:1px solid '+BORD+';"><tr><td align="center" style="padding:40px '+P+' 32px;">';
@@ -434,6 +434,7 @@ const generateInlineHtml = (draft) => {
         ll += '<!--[if mso]></td></tr></table><![endif]--><!--[if !mso]><!--></td></tr></table><!--<![endif]--></td></tr></table>';
         return ll;
       }
+    }
   };
 
   const body = draft.blocks.map(blockHtml).join('\n');
