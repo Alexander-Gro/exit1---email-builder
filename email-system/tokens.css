@@ -74,3 +74,15 @@
 .plan-nano   { --e1-accent: #4A8DB8; --e1-accent-contrast: #ffffff; }
 .plan-scale  { --e1-accent: #3EB5A5; --e1-accent-contrast: #ffffff; }
 .plan-agency { --e1-accent: #3FB873; --e1-accent-contrast: #ffffff; }
+
+/* ── Light email preview mode ──
+   Applied when meta.emailMode === 'light'.
+   Simulates a bright inbox background (e.g. Apple Mail light, Gmail).
+   The email shell itself stays dark (exit1 brand is dark-first);
+   only the surrounding preview canvas changes — handled in builder.css.
+   For a true light-mode email, all block colours would need overrides.   */
+.e1-shell.email-preview-light {
+  box-shadow:
+    inset 0 0 0 1px rgba(0,0,0,0.10),
+    0 40px 100px -20px rgba(0,0,0,0.25);
+}

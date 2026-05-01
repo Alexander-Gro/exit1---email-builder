@@ -14,12 +14,39 @@ const PLANS = {
   scale:  { label:'Scale',  accent:'#3EB5A5', contrast:'#ffffff', desc:'High speed',   cls:'plan-scale'  },
   agency: { label:'Agency', accent:'#3FB873', contrast:'#ffffff', desc:'Enterprise',   cls:'plan-agency' },
 };
-const getAccent   = m => m.accentOverride || PLANS[m.plan||'nano']?.accent   || '#4A8DB8';
-const getContrast = m => m.accentOverride ? '#ffffff' : PLANS[m.plan||'nano']?.contrast || '#ffffff';
+
+/* ── Color scheme presets ── */
+const COLOR_SCHEMES = [
+  { id:'default', label:'exit1',   dots:['#B2D3E6','#4A8DB8','#3EB5A5','#3FB873'], colors:{ free:'#B2D3E6', nano:'#4A8DB8', scale:'#3EB5A5', agency:'#3FB873' } },
+  { id:'green',   label:'Green',   dots:['#8DD5BB','#38AD85','#2D9E76','#1E8E60'], colors:{ free:'#8DD5BB', nano:'#38AD85', scale:'#2D9E76', agency:'#1E8E60' } },
+  { id:'purple',  label:'Purple',  dots:['#C4B5FD','#8B5CF6','#7C3AED','#6D28D9'], colors:{ free:'#C4B5FD', nano:'#8B5CF6', scale:'#7C3AED', agency:'#6D28D9' } },
+  { id:'amber',   label:'Amber',   dots:['#FDE68A','#F59E0B','#D97706','#B45309'], colors:{ free:'#FDE68A', nano:'#F59E0B', scale:'#D97706', agency:'#B45309' } },
+  { id:'rose',    label:'Rose',    dots:['#FECDD3','#FB7185','#F43F5E','#E11D48'], colors:{ free:'#FECDD3', nano:'#FB7185', scale:'#F43F5E', agency:'#E11D48' } },
+  { id:'custom',  label:'Custom',  dots:[], colors:null },
+];
+
+/* ── Colour helpers ── */
+const hexLuminance = hex => {
+  try {
+    const r=parseInt(hex.slice(1,3),16)/255, g=parseInt(hex.slice(3,5),16)/255, b=parseInt(hex.slice(5,7),16)/255;
+    const s=v=>v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4);
+    return 0.2126*s(r)+0.7152*s(g)+0.0722*s(b);
+  } catch { return 0; }
+};
+const autoContrast = hex => hexLuminance(hex) > 0.35 ? '#000000' : '#ffffff';
+
+/* ── Plan colour resolvers ── */
+const getPlanColor   = (m, plan) => (m.planColors&&m.planColors[plan]) || PLANS[plan]?.accent   || '#4A8DB8';
+const getPlanContrast= (m, plan) => (m.planColors&&m.planColors[plan]) ? autoContrast(m.planColors[plan]) : (PLANS[plan]?.contrast || '#ffffff');
+const getAccent      = m => m.accentOverride || getPlanColor(m, m.plan||'nano');
+const getContrast    = m => m.accentOverride ? autoContrast(m.accentOverride) : getPlanContrast(m, m.plan||'nano');
+
+/* ── Editor UI mode (dark/light) — stored separately from draft ── */
+const EDITOR_MODE_KEY = 'exit1-editor-mode';
 
 /* ── Seed ── */
 const SEED = {
-  meta: { name:'Welcome · Free tier', subject:'You just stopped flying blind', preview:'Two minutes of setup. Then we watch.', showGrid:true, plan:'free', accentOverride:'' },
+  meta: { name:'Welcome · Free tier', subject:'You just stopped flying blind', preview:'Two minutes of setup. Then we watch.', showGrid:true, plan:'free', accentOverride:'', emailMode:'dark', planColors:{}, colorScheme:'default' },
   blocks: [
     { id:uid(), type:'header', data:BLOCKS.header.defaults() },
     { id:uid(), type:'hero',   data:BLOCKS.hero.defaults()   },
@@ -877,9 +904,10 @@ ${draft.blocks.map(b => blockToMjml(b, accent, contrast)).join('')}
 const Canvas = ({ draft, selectedId, onSelect, onReorder, onDelete, onDuplicate }) => {
   const [dragId,  setDragId]  = useState(null);
   const [dropIdx, setDropIdx] = useState(null);
-  const accent   = getAccent(draft.meta);
-  const planCls  = PLANS[draft.meta.plan||'nano']?.cls || 'plan-nano';
-  const gridCls  = draft.meta.showGrid ? '' : ' no-grid';
+  const accent    = getAccent(draft.meta);
+  const planCls   = PLANS[draft.meta.plan||'nano']?.cls || 'plan-nano';
+  const gridCls   = draft.meta.showGrid ? '' : ' no-grid';
+  const emailMode = draft.meta.emailMode || 'dark';
 
   const onDragStart = (e, id) => { setDragId(id); e.dataTransfer.effectAllowed='move'; try{e.dataTransfer.setData('text/plain',id);}catch{} };
   const onDragOver  = (e, idx) => { e.preventDefault(); const r=e.currentTarget.getBoundingClientRect(); setDropIdx((e.clientY-r.top)>r.height/2?idx+1:idx); };
@@ -892,12 +920,15 @@ const Canvas = ({ draft, selectedId, onSelect, onReorder, onDelete, onDuplicate 
   };
 
   return (
-    <div className="canvas-wrap" onDragOver={e=>e.preventDefault()} onDrop={onDrop} onClick={()=>onSelect(null)}>
+    <div className={`canvas-wrap${emailMode==='light'?' email-light-preview':''}`} onDragOver={e=>e.preventDefault()} onDrop={onDrop} onClick={()=>onSelect(null)}>
       <div className="canvas-meta">
         <span>{draft.meta.name || 'Untitled'}</span>
         <span style={{display:'flex',alignItems:'center',gap:8}}>
-          <span style={{width:10,height:10,borderRadius:'50%',background:accent,display:'inline-block'}}></span>
-          {PLANS[draft.meta.plan]?.label||'Nano'} · {draft.blocks.length} blocks · 600px
+          <span className="canvas-meta-badge" style={{color:accent,borderColor:`${accent}30`,background:`${accent}10`}}>
+            <span style={{width:6,height:6,borderRadius:'50%',background:accent}}></span>
+            {PLANS[draft.meta.plan]?.label||'Nano'}
+          </span>
+          <span style={{opacity:0.5}}>{draft.blocks.length} blocks · 600px · {emailMode} inbox</span>
         </span>
       </div>
 
@@ -905,7 +936,7 @@ const Canvas = ({ draft, selectedId, onSelect, onReorder, onDelete, onDuplicate 
         <div className="empty-state">Drag a block from the left to start.<br/>Draft saves automatically.</div>
       )}
 
-      <div className={`e1-shell blocks-container${gridCls} ${planCls}`} style={{'--e1-accent':accent}}>
+      <div className={`e1-shell blocks-container${gridCls} ${planCls}${emailMode==='light'?' email-preview-light':''}`} style={{'--e1-accent':accent,'--e1-accent-contrast':getContrast(draft.meta)}}>
         {draft.blocks.map((b, idx) => (
           <React.Fragment key={b.id}>
             {dropIdx===idx&&<div className="drop-indicator"/>}
@@ -936,15 +967,29 @@ const Canvas = ({ draft, selectedId, onSelect, onReorder, onDelete, onDuplicate 
 /* ════════════════════════════════════════════
    BRAND PANEL (shown when no block selected)
    ════════════════════════════════════════════ */
-const BrandPanel = ({ draft, updateMeta, updateBlock }) => {
+const BrandPanel = ({ draft, updateMeta, updateBlock, editorMode, setEditorMode }) => {
   const meta = draft.meta;
-  const currentAccent = getAccent(meta);
+  const planColors  = meta.planColors  || {};
+  const emailMode   = meta.emailMode   || 'dark';
+  const colorScheme = meta.colorScheme || 'default';
 
-  // Find first header block to sync logo fields
   const headerBlock = draft.blocks.find(b => b.type==='header');
-  const updateHeader = patch => {
-    if (headerBlock) updateBlock(headerBlock.id, {...headerBlock.data, ...patch});
+  const updateHeader = patch => { if (headerBlock) updateBlock(headerBlock.id, {...headerBlock.data, ...patch}); };
+
+  /* Apply a preset scheme — sets planColors + marks colorScheme */
+  const applyScheme = id => {
+    const scheme = COLOR_SCHEMES.find(s=>s.id===id);
+    if (!scheme || !scheme.colors) { updateMeta({colorScheme:id}); return; }
+    updateMeta({ colorScheme:id, planColors:{...planColors, ...scheme.colors}, accentOverride:'' });
   };
+
+  /* Update a single plan's colour */
+  const setPlanColor = (plan, hex) => {
+    updateMeta({ planColors:{...planColors, [plan]:hex}, colorScheme:'custom', accentOverride:'' });
+  };
+
+  /* Detect which scheme is currently active */
+  const activePlanDots = Object.keys(PLANS).map(k => getPlanColor(meta, k));
 
   return (
     <div className="inspector">
@@ -956,65 +1001,117 @@ const BrandPanel = ({ draft, updateMeta, updateBlock }) => {
       </div>
       <div className="inspector-body">
 
-        {/* ── Plan selector ── */}
-        <div className="field" style={{marginBottom:18}}>
-          <label>Plan</label>
-          <div className="plan-grid">
-            {Object.entries(PLANS).map(([key, p]) => (
-              <div
-                key={key}
-                className={`plan-card${meta.plan===key?' selected':''}`}
-                onClick={()=>updateMeta({plan:key, accentOverride:''})}
-              >
-                <div className="plan-swatch" style={{background:p.accent}}></div>
-                <div className="plan-card-name">{p.label}</div>
-                <div className="plan-card-desc">{p.desc}</div>
+        {/* ── Editor UI mode ── */}
+        <div className="inspector-section" style={{marginTop:0,paddingTop:0,borderTop:'none'}}>Editor theme</div>
+        <div className="field">
+          <label>App appearance</label>
+          <div className="mode-toggle">
+            <button className={editorMode==='dark'?'on':''} onClick={()=>setEditorMode('dark')}>🌙 Dark</button>
+            <button className={editorMode==='light'?'on':''} onClick={()=>setEditorMode('light')}>☀️ Light</button>
+          </div>
+        </div>
+
+        {/* ── Email preview mode ── */}
+        <div className="field">
+          <label>Email canvas</label>
+          <div className="mode-toggle">
+            <button className={emailMode==='dark'?'on':''} onClick={()=>updateMeta({emailMode:'dark'})}>Dark inbox</button>
+            <button className={emailMode==='light'?'on':''} onClick={()=>updateMeta({emailMode:'light'})}>Light inbox</button>
+          </div>
+          <div className="help-text">Simulates how the email appears in dark vs. light inbox backgrounds.</div>
+        </div>
+
+        {/* ── Color scheme presets ── */}
+        <div className="inspector-section">Colour scheme</div>
+        <div className="field">
+          <label>Presets</label>
+          <div className="scheme-grid">
+            {COLOR_SCHEMES.map(s=>(
+              <div key={s.id} className={`scheme-chip${colorScheme===s.id?' selected':''}`} onClick={()=>applyScheme(s.id)}>
+                {s.dots.length>0&&(
+                  <div className="scheme-dots">
+                    {s.dots.map((c,i)=><div key={i} className="scheme-dot" style={{background:c}}/>)}
+                  </div>
+                )}
+                {s.label}
               </div>
             ))}
+          </div>
+          <div className="help-text" style={{marginTop:6}}>Or pick individual colours per plan below.</div>
+        </div>
+
+        {/* ── Per-plan colour pickers ── */}
+        <div className="inspector-section">Plan colours</div>
+        {Object.entries(PLANS).map(([key, p]) => {
+          const cur = getPlanColor(meta, key);
+          return (
+            <div key={key} className="plan-color-row">
+              <span className="plan-color-label">{p.label}</span>
+              <div className="color-swatch">
+                <input type="color" value={cur} onChange={e=>setPlanColor(key, e.target.value)} />
+                <input type="text" value={cur} onChange={e=>{ if(/^#[0-9a-fA-F]{6}$/.test(e.target.value)) setPlanColor(key, e.target.value); }} />
+                {planColors[key]&&planColors[key]!==PLANS[key].accent&&(
+                  <button className="mini-btn" style={{flexShrink:0}} onClick={()=>{
+                    const next={...planColors}; delete next[key];
+                    updateMeta({planColors:next, colorScheme:'custom'});
+                  }}>↺</button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+
+        {/* ── Active plan selector ── */}
+        <div className="inspector-section">Active plan</div>
+        <div className="field" style={{marginBottom:18}}>
+          <div className="plan-grid">
+            {Object.entries(PLANS).map(([key]) => {
+              const accent = getPlanColor(meta, key);
+              return (
+                <div key={key} className={`plan-card${meta.plan===key?' selected':''}`}
+                  onClick={()=>updateMeta({plan:key, accentOverride:''})}>
+                  <div className="plan-swatch" style={{background:accent}}></div>
+                  <div className="plan-card-name">{PLANS[key].label}</div>
+                  <div className="plan-card-desc">{PLANS[key].desc}</div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
         {/* ── Accent override ── */}
-        <Field label="Accent colour" help="Override plan default. Clear to restore plan colour.">
+        <Field label="One-off accent override" help="Overrides the active plan colour for this email only.">
           <div className="color-swatch">
-            <input type="color" value={currentAccent}
-              onChange={e=>updateMeta({accentOverride:e.target.value})} />
-            <input type="text"  value={meta.accentOverride||''}
-              placeholder={PLANS[meta.plan||'nano']?.accent}
+            <input type="color" value={getAccent(meta)} onChange={e=>updateMeta({accentOverride:e.target.value})} />
+            <input type="text"  value={meta.accentOverride||''} placeholder={getPlanColor(meta, meta.plan||'nano')}
               onChange={e=>updateMeta({accentOverride:e.target.value})} />
             {meta.accentOverride&&(
-              <button className="mini-btn" style={{flexShrink:0}}
-                onClick={()=>updateMeta({accentOverride:''})}>Reset</button>
+              <button className="mini-btn" style={{flexShrink:0}} onClick={()=>updateMeta({accentOverride:''})}>↺</button>
             )}
           </div>
         </Field>
 
         {/* ── Logo ── */}
+        <div className="inspector-section">Logo &amp; metadata</div>
         <Field label="Logo">
-          <div style={{padding:'10px 12px',background:'var(--ed-bg)',border:'1px solid var(--ed-border)',borderRadius:6,display:'flex',alignItems:'center',gap:10,marginBottom:8}}>
-            <img src="assets/exit1-logo.png" alt="exit1.dev" style={{height:20,width:'auto',opacity:0.9}} />
-            <span style={{fontSize:11,color:'rgba(255,255,255,0.3)'}}>exit1-logo.png</span>
+          <div style={{padding:'9px 12px',background:'var(--ed-bg)',border:'1px solid var(--ed-border)',borderRadius:6,display:'flex',alignItems:'center',gap:10,marginBottom:8}}>
+            <img src="assets/exit1-logo.png" alt="exit1.dev" style={{height:20,width:'auto',opacity:0.85}} />
+            <span style={{fontSize:11,color:'var(--ed-text-dim)'}}>exit1-logo.png</span>
           </div>
-          <TI value={meta.logoUrl||''} onChange={v=>updateMeta({logoUrl:v})} placeholder="https://your-cdn.com/exit1-logo.png" />
-          <div className="help-text">Hosted URL used in exported HTML. Must be publicly accessible for email clients.</div>
+          <TI value={meta.logoUrl||''} onChange={v=>updateMeta({logoUrl:v})} placeholder="https://your-cdn.com/logo.png" />
+          <div className="help-text">Public URL used in exported HTML (email clients block local files).</div>
         </Field>
-        <Field label="Alt text (fallback)">
-          <TI value={headerBlock?.data.brandName||'exit1.dev'}
-            onChange={v=>updateHeader({brandName:v})} />
+        <Field label="Brand name (fallback text)">
+          <TI value={headerBlock?.data.brandName||'exit1.dev'} onChange={v=>updateHeader({brandName:v})} />
         </Field>
 
         {/* ── Grid toggle ── */}
-        <Chk value={meta.showGrid} onChange={v=>updateMeta({showGrid:v})} label="Grid background" />
-
-        <hr style={{border:'none',borderTop:'1px solid rgba(255,255,255,0.08)',margin:'16px 0'}} />
+        <Chk value={meta.showGrid} onChange={v=>updateMeta({showGrid:v})} label="Grid background on email canvas" />
 
         {/* ── Email metadata ── */}
-        <div style={{fontSize:11,letterSpacing:'0.1em',textTransform:'uppercase',color:'rgba(255,255,255,0.35)',fontWeight:500,marginBottom:12}}>Email metadata</div>
-
-        <Field label="Internal name">
-          <TI value={meta.name} onChange={v=>updateMeta({name:v})} />
-        </Field>
-        <Field label="Subject line" help="Keep under 50 chars. Front-load the key info.">
+        <div className="inspector-section">Email metadata</div>
+        <Field label="Internal name"><TI value={meta.name} onChange={v=>updateMeta({name:v})} /></Field>
+        <Field label="Subject line" help="Keep under 50 chars.">
           <TI value={meta.subject} onChange={v=>updateMeta({subject:v})} />
           <div className="help-text" style={{textAlign:'right',marginTop:3}}>{(meta.subject||'').length}/50</div>
         </Field>
@@ -1023,7 +1120,7 @@ const BrandPanel = ({ draft, updateMeta, updateBlock }) => {
         </Field>
 
         <div className="help-text" style={{marginTop:16}}>
-          Click any block on the canvas to edit its content. Use <b>Export HTML</b> to get Resend-ready inline HTML, or <b>Export MJML</b> for a compilable source file.
+          All settings auto-save to browser storage. Click any block on the canvas to edit its content.
         </div>
       </div>
     </div>
@@ -1033,8 +1130,8 @@ const BrandPanel = ({ draft, updateMeta, updateBlock }) => {
 /* ════════════════════════════════════════════
    BLOCK INSPECTOR
    ════════════════════════════════════════════ */
-const Inspector = ({ draft, selectedId, updateBlock, updateMeta }) => {
-  if (!selectedId) return <BrandPanel draft={draft} updateMeta={updateMeta} updateBlock={updateBlock} />;
+const Inspector = ({ draft, selectedId, updateBlock, updateMeta, editorMode, setEditorMode }) => {
+  if (!selectedId) return <BrandPanel draft={draft} updateMeta={updateMeta} updateBlock={updateBlock} editorMode={editorMode} setEditorMode={setEditorMode} />;
   const block = draft.blocks.find(b=>b.id===selectedId);
   if (!block) return <BrandPanel draft={draft} updateMeta={updateMeta} updateBlock={updateBlock} />;
   const def = BLOCKS[block.type];
@@ -1137,7 +1234,16 @@ const ExportModal = ({ content, type, name, onClose }) => {
 const EmailApp = ({ view, setView }) => {
   const [draft,      setDraft]      = useState(loadDraft);
   const [selectedId, setSelectedId] = useState(null);
-  const [modal,      setModal]      = useState(null); // {type,content}
+  const [modal,      setModal]      = useState(null);
+  const [editorMode, setEditorModeState] = useState(() => localStorage.getItem(EDITOR_MODE_KEY)||'dark');
+
+  /* Persist editor mode + apply data-mode attribute to root */
+  const setEditorMode = mode => {
+    setEditorModeState(mode);
+    localStorage.setItem(EDITOR_MODE_KEY, mode);
+    document.getElementById('app')?.setAttribute('data-mode', mode);
+  };
+  useEffect(()=>{ document.getElementById('app')?.setAttribute('data-mode', editorMode); }, [editorMode]);
 
   useEffect(()=>{ saveDraft(draft); }, [draft]);
 
@@ -1188,7 +1294,8 @@ const EmailApp = ({ view, setView }) => {
     inp.click();
   };
 
-  const currentPlan = PLANS[draft.meta.plan]||PLANS.nano;
+  const currentPlanKey = draft.meta.plan || 'nano';
+  const currentAccentColor = getPlanColor(draft.meta, currentPlanKey);
 
   return (
     <>
@@ -1204,17 +1311,23 @@ const EmailApp = ({ view, setView }) => {
         <span style={{
           display:'inline-flex',alignItems:'center',gap:6,
           marginLeft:8,padding:'3px 10px',
-          borderRadius:9999,border:'1px solid rgba(255,255,255,0.1)',
+          borderRadius:9999,border:`1px solid ${currentAccentColor}30`,
           fontSize:11,fontWeight:600,letterSpacing:'0.06em',
-          background:`${currentPlan.accent}18`,
-          color:currentPlan.accent,
+          background:`${currentAccentColor}14`,color:currentAccentColor,
         }}>
-          <span style={{width:6,height:6,borderRadius:'50%',background:currentPlan.accent}}></span>
-          {currentPlan.label.toUpperCase()}
+          <span style={{width:6,height:6,borderRadius:'50%',background:currentAccentColor}}></span>
+          {PLANS[currentPlanKey]?.label.toUpperCase()}
         </span>
 
         <span className="topbar-spacer"></span>
-        <button className="topbar-btn ghost" onClick={()=>{if(confirm('Start blank?')){setDraft({meta:{name:'Untitled',subject:'',preview:'',showGrid:true,plan:'nano',accentOverride:'',logoUrl:''},blocks:[]});setSelectedId(null);}}}>New</button>
+
+        {/* Editor mode toggle */}
+        <button className="topbar-btn ghost icon-btn" title={`Switch to ${editorMode==='dark'?'light':'dark'} mode`}
+          onClick={()=>setEditorMode(editorMode==='dark'?'light':'dark')}>
+          {editorMode==='dark'?'☀️':'🌙'}
+        </button>
+
+        <button className="topbar-btn ghost" onClick={()=>{if(confirm('Start blank?')){setDraft({meta:{name:'Untitled',subject:'',preview:'',showGrid:true,plan:'nano',accentOverride:'',emailMode:'dark',planColors:{},colorScheme:'default',logoUrl:''},blocks:[]});setSelectedId(null);}}}>New</button>
         <button className="topbar-btn ghost" onClick={importJson}>Import</button>
         <button className="topbar-btn ghost" onClick={exportJson}>Save JSON</button>
         <button className="topbar-btn ghost" onClick={()=>{if(confirm('Reset to welcome email?')){setDraft(SEED);setSelectedId(null);}}}>Reset</button>
@@ -1238,6 +1351,8 @@ const EmailApp = ({ view, setView }) => {
             selectedId={selectedId}
             updateBlock={updateBlock}
             updateMeta={updateMeta}
+            editorMode={editorMode}
+            setEditorMode={setEditorMode}
           />
         </div>
       </div>
