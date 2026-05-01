@@ -700,8 +700,194 @@ const BLOCKS = {
     },
   },
 
+  /* ── Founder Signature ── */
+  signature: {
+    type:'signature', label:'Signature', icon:'✍',
+    defaults: ()=>({ signoff:'Cheers,', name:'Marcus Eriksson', title:'Founder & CEO, exit1.dev', avatarUrl:'', ps:'' }),
+    render: d=>(
+      <div style={{padding:'28px 32px',borderTop:'1px solid rgba(255,255,255,0.07)'}}>
+        {d.signoff&&<p style={{margin:'0 0 20px',color:'rgba(255,255,255,0.65)',fontSize:15,lineHeight:1.6}}>{d.signoff}</p>}
+        <div style={{display:'flex',alignItems:'center',gap:14}}>
+          {d.avatarUrl
+            ? <img src={d.avatarUrl} alt={d.name||''} style={{width:48,height:48,borderRadius:'50%',objectFit:'cover',flexShrink:0,border:'1px solid rgba(255,255,255,0.12)'}} />
+            : <div style={{width:48,height:48,borderRadius:'50%',background:'rgba(255,255,255,0.06)',border:'1px solid rgba(255,255,255,0.12)',flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,color:'rgba(255,255,255,0.25)',fontWeight:700}}>{(d.name||'?')[0]}</div>
+          }
+          <div>
+            <div style={{color:'#fff',fontWeight:700,fontSize:15}}>{d.name}</div>
+            <div style={{color:'rgba(255,255,255,0.45)',fontSize:13,marginTop:2}}>{d.title}</div>
+          </div>
+        </div>
+        {d.ps&&<p style={{margin:'20px 0 0',color:'rgba(255,255,255,0.5)',fontSize:13,lineHeight:1.6,borderTop:'1px solid rgba(255,255,255,0.06)',paddingTop:16}}><b style={{color:'rgba(255,255,255,0.7)'}}>P.S.</b> {d.ps}</p>}
+      </div>
+    ),
+    inspector: (d,up)=>(
+      <>
+        <Field label="Sign-off line"><TI value={d.signoff} onChange={v=>up({signoff:v})} placeholder="Cheers," /></Field>
+        <Field label="Name"><TI value={d.name} onChange={v=>up({name:v})} /></Field>
+        <Field label="Title / Role"><TI value={d.title} onChange={v=>up({title:v})} /></Field>
+        <Field label="Avatar URL" help="Public https:// image, shown as circle"><UI value={d.avatarUrl} onChange={v=>up({avatarUrl:v})} /></Field>
+        <Field label="P.S. line (optional)"><TA value={d.ps} onChange={v=>up({ps:v})} rows={2} /></Field>
+      </>
+    ),
+  },
+
+  /* ── Testimonial ── */
+  testimonial: {
+    type:'testimonial', label:'Testimonial', icon:'★',
+    defaults: ()=>({ avatarUrl:'', quote:'exit1 caught the incident before our own alerts fired. Saved us a brutal on-call night.', author:'Priya Nair', role:'Platform Engineer', company:'Vercel', stars:5 }),
+    render: d=>(
+      <div style={{margin:'0 32px 16px',padding:24,background:'rgba(18,18,20,0.82)',border:'1px solid rgba(255,255,255,0.09)',borderRadius:10,boxShadow:'inset 0 0.5px 0 rgba(255,255,255,0.12)'}}>
+        {d.stars>0&&<div style={{marginBottom:12,fontSize:14,letterSpacing:2,color:'var(--e1-accent)'}}>{Array.from({length:Math.min(5,d.stars)}).map((_,i)=><span key={i}>★</span>)}</div>}
+        <p style={{margin:'0 0 18px',color:'#fff',fontSize:16,fontWeight:500,lineHeight:1.5}}>"{d.quote}"</p>
+        <div style={{display:'flex',alignItems:'center',gap:12}}>
+          {d.avatarUrl
+            ? <img src={d.avatarUrl} alt={d.author} style={{width:36,height:36,borderRadius:'50%',objectFit:'cover',flexShrink:0,border:'1px solid rgba(255,255,255,0.12)'}} />
+            : <div style={{width:36,height:36,borderRadius:'50%',background:'rgba(255,255,255,0.06)',border:'1px solid rgba(255,255,255,0.12)',flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,color:'rgba(255,255,255,0.3)',fontWeight:700}}>{(d.author||'?')[0]}</div>
+          }
+          <div>
+            <div style={{color:'rgba(255,255,255,0.85)',fontWeight:600,fontSize:13}}>{d.author} {d.company&&<span style={{color:'rgba(255,255,255,0.35)',fontWeight:400}}>· {d.company}</span>}</div>
+            {d.role&&<div style={{color:'rgba(255,255,255,0.4)',fontSize:12,marginTop:1}}>{d.role}</div>}
+          </div>
+        </div>
+      </div>
+    ),
+    inspector: (d,up)=>(
+      <>
+        <Field label="Quote"><TA value={d.quote} onChange={v=>up({quote:v})} rows={4} /></Field>
+        <Field label="Stars (0–5)">
+          <Seg value={String(d.stars)} onChange={v=>up({stars:Number(v)})} options={[{value:'0',label:'None'},{value:'3',label:'★★★'},{value:'4',label:'★★★★'},{value:'5',label:'★★★★★'}]} />
+        </Field>
+        <Field label="Author"><TI value={d.author} onChange={v=>up({author:v})} /></Field>
+        <Field label="Role"><TI value={d.role} onChange={v=>up({role:v})} /></Field>
+        <Field label="Company"><TI value={d.company} onChange={v=>up({company:v})} /></Field>
+        <Field label="Avatar URL" help="Public https:// image"><UI value={d.avatarUrl} onChange={v=>up({avatarUrl:v})} /></Field>
+      </>
+    ),
+  },
+
+  /* ── Changelog ── */
+  changelog: {
+    type:'changelog', label:'Changelog', icon:'⌥',
+    defaults: ()=>({ version:'v2.4.0', date:'Apr 28, 2025', items:[{type:'new',text:'Multi-region failover with automatic DNS rerouting'},{type:'improved',text:'P99 alert latency reduced to under 8 seconds'},{type:'fixed',text:'Resolved false positives on IPv6-only endpoints'}] }),
+    render: d=>{
+      const TC={'new':'var(--e1-accent)','improved':'#3EB5A5','fixed':'#E3B24A','removed':'#E24530'};
+      return (
+        <div style={{margin:'0 32px 16px',background:'rgba(18,18,20,0.82)',border:'1px solid rgba(255,255,255,0.09)',borderRadius:10,overflow:'hidden',boxShadow:'inset 0 0.5px 0 rgba(255,255,255,0.12)'}}>
+          <div style={{padding:'14px 20px',borderBottom:'1px solid rgba(255,255,255,0.07)',display:'flex',alignItems:'center',gap:10}}>
+            <span style={{padding:'3px 10px',borderRadius:9999,background:'var(--e1-accent)',color:'var(--e1-accent-contrast)',fontWeight:700,fontSize:11,letterSpacing:'0.08em'}}>{d.version}</span>
+            {d.date&&<span style={{fontSize:12,color:'rgba(255,255,255,0.35)',fontFamily:'var(--e1-mono)'}}>{d.date}</span>}
+          </div>
+          <div style={{padding:'16px 20px'}}>
+            {(d.items||[]).map((item,i)=>(
+              <div key={i} style={{display:'flex',gap:12,marginBottom:i<d.items.length-1?12:0}}>
+                <span style={{padding:'2px 8px',borderRadius:4,background:TC[item.type]||TC.new,color:'#000',fontSize:9,fontWeight:700,letterSpacing:'0.1em',textTransform:'uppercase',flexShrink:0,alignSelf:'flex-start',marginTop:1}}>{item.type}</span>
+                <span style={{color:'rgba(255,255,255,0.72)',fontSize:14,lineHeight:1.5}}>{item.text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    },
+    inspector: (d,up)=>{
+      const TYPES=['new','improved','fixed','removed'];
+      const items=d.items||[];
+      const set=(i,patch)=>{ const a=[...items]; a[i]={...a[i],...patch}; up({items:a}); };
+      return (
+        <>
+          <div className="field-row">
+            <Field label="Version"><TI value={d.version} onChange={v=>up({version:v})} placeholder="v2.4.0" /></Field>
+            <Field label="Date"><TI value={d.date} onChange={v=>up({date:v})} placeholder="Apr 28, 2025" /></Field>
+          </div>
+          {items.map((item,i)=>(
+            <div key={i} className="field-group">
+              <div className="field-group-head">
+                <h4>Item {i+1}</h4>
+                <button className="mini-btn danger" onClick={()=>up({items:items.filter((_,j)=>j!==i)})}>Remove</button>
+              </div>
+              <Field label="Type">
+                <Seg value={item.type} onChange={v=>set(i,{type:v})} options={TYPES.map(t=>({value:t,label:t[0].toUpperCase()+t.slice(1)}))} />
+              </Field>
+              <Field label="Text"><TI value={item.text} onChange={v=>set(i,{text:v})} /></Field>
+            </div>
+          ))}
+          <button className="topbar-btn" onClick={()=>up({items:[...items,{type:'new',text:''}]})}>+ Add item</button>
+        </>
+      );
+    },
+  },
+
+  /* ── Event Banner ── */
+  event: {
+    type:'event', label:'Event', icon:'◈',
+    defaults: ()=>({ tag:'WEBINAR', date:'May 15, 2025', time:'2:00 PM UTC', headline:'Join us live: What\'s new in exit1 v3', sub:'A 30-minute walkthrough of the biggest release yet — with live Q&A.', ctaText:'Reserve your spot →', ctaUrl:'#' }),
+    render: d=>(
+      <div style={{padding:'32px 32px 28px',borderBottom:'1px solid rgba(255,255,255,0.07)'}}>
+        <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:16}}>
+          {d.tag&&<span style={{padding:'3px 11px',borderRadius:9999,background:'var(--e1-accent)',color:'var(--e1-accent-contrast)',fontSize:10,fontWeight:700,letterSpacing:'0.14em',textTransform:'uppercase'}}>{d.tag}</span>}
+          {(d.date||d.time)&&<span style={{fontSize:12,color:'rgba(255,255,255,0.4)',fontFamily:'var(--e1-mono)'}}>{[d.date,d.time].filter(Boolean).join(' · ')}</span>}
+        </div>
+        {d.headline&&<h2 style={{margin:'0 0 10px',color:'#fff',fontSize:26,fontWeight:700,lineHeight:1.15,letterSpacing:'-0.02em'}}>{d.headline}</h2>}
+        {d.sub&&<p style={{margin:'0 0 20px',color:'rgba(255,255,255,0.6)',fontSize:15,lineHeight:1.6}}>{d.sub}</p>}
+        {d.ctaText&&<a href={d.ctaUrl||'#'} className="e1-cta-primary" style={{textDecoration:'none'}}>{d.ctaText}</a>}
+      </div>
+    ),
+    inspector: (d,up)=>(
+      <>
+        <Field label="Tag"><TI value={d.tag} onChange={v=>up({tag:v})} placeholder="WEBINAR" /></Field>
+        <div className="field-row">
+          <Field label="Date"><TI value={d.date} onChange={v=>up({date:v})} placeholder="May 15, 2025" /></Field>
+          <Field label="Time"><TI value={d.time} onChange={v=>up({time:v})} placeholder="2:00 PM UTC" /></Field>
+        </div>
+        <Field label="Headline"><TA value={d.headline} onChange={v=>up({headline:v})} rows={2} /></Field>
+        <Field label="Subtext"><TA value={d.sub} onChange={v=>up({sub:v})} rows={2} /></Field>
+        <Field label="CTA Text"><TI value={d.ctaText} onChange={v=>up({ctaText:v})} /></Field>
+        <Field label="CTA URL"><UI value={d.ctaUrl} onChange={v=>up({ctaUrl:v})} /></Field>
+      </>
+    ),
+  },
+
+  /* ── Social Links ── */
+  sociallinks: {
+    type:'sociallinks', label:'Social links', icon:'⇢',
+    defaults: ()=>({ label:'Follow along', links:[{platform:'Twitter / X',handle:'@exit1dev',url:'#'},{platform:'GitHub',handle:'exit1-dev',url:'#'},{platform:'LinkedIn',handle:'exit1.dev',url:'#'}] }),
+    render: d=>(
+      <div style={{padding:'20px 32px 24px',borderTop:'1px solid rgba(255,255,255,0.07)'}}>
+        {d.label&&<p style={{margin:'0 0 14px',color:'rgba(255,255,255,0.4)',fontSize:11,fontWeight:600,letterSpacing:'0.14em',textTransform:'uppercase'}}>{d.label}</p>}
+        <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
+          {(d.links||[]).map((l,i)=>(
+            <a key={i} href={l.url||'#'} style={{display:'inline-flex',alignItems:'center',gap:6,padding:'6px 14px',borderRadius:9999,border:'1px solid rgba(255,255,255,0.12)',background:'rgba(255,255,255,0.04)',color:'rgba(255,255,255,0.7)',fontSize:12,fontWeight:500,textDecoration:'none'}}>
+              <span style={{color:'var(--e1-accent)',fontWeight:700,fontSize:11}}>{l.platform}</span>
+              <span style={{color:'rgba(255,255,255,0.4)',fontSize:11}}>{l.handle}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    ),
+    inspector: (d,up)=>{
+      const links=d.links||[];
+      const set=(i,patch)=>{ const a=[...links]; a[i]={...a[i],...patch}; up({links:a}); };
+      return (
+        <>
+          <Field label="Label"><TI value={d.label} onChange={v=>up({label:v})} placeholder="Follow along" /></Field>
+          {links.map((l,i)=>(
+            <div key={i} className="field-group">
+              <div className="field-group-head">
+                <h4>Link {i+1}</h4>
+                <button className="mini-btn danger" onClick={()=>up({links:links.filter((_,j)=>j!==i)})}>Remove</button>
+              </div>
+              <Field label="Platform"><TI value={l.platform} onChange={v=>set(i,{platform:v})} placeholder="Twitter / X" /></Field>
+              <Field label="Handle"><TI value={l.handle} onChange={v=>set(i,{handle:v})} placeholder="@yourhandle" /></Field>
+              <Field label="URL"><UI value={l.url} onChange={v=>set(i,{url:v})} /></Field>
+            </div>
+          ))}
+          <button className="topbar-btn" onClick={()=>up({links:[...links,{platform:'',handle:'',url:'#'}]})}>+ Add link</button>
+        </>
+      );
+    },
+  },
+
 };
 
-const BLOCK_ORDER = ['header','announcement','hero','body','alert','steps','checklist','ctablock','twocol','stats','bigmetric','code','image','feature','timeline','quote','linklist','plan','divider','footer'];
+const BLOCK_ORDER = ['header','announcement','hero','body','alert','steps','checklist','ctablock','twocol','stats','bigmetric','code','image','feature','timeline','quote','testimonial','linklist','changelog','event','plan','sociallinks','signature','divider','footer'];
 
 Object.assign(window, { BLOCKS, BLOCK_ORDER, Field, TI, UI, TA, Seg, Chk });

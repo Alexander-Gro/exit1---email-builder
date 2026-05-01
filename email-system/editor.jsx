@@ -434,6 +434,92 @@ const generateInlineHtml = (draft) => {
         ll += '<!--[if mso]></td></tr></table><![endif]--><!--[if !mso]><!--></td></tr></table><!--<![endif]--></td></tr></table>';
         return ll;
       }
+
+      case 'signature': {
+        let s = '<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="'+BG+'" style="background:'+BG+';border-top:1px solid '+BORD+';"><tr><td style="padding:28px '+P+' 24px;">';
+        if (d.signoff) s += '<p style="margin:0 0 20px;padding:0;color:'+T2+';font-size:15px;line-height:1.6;font-family:'+FONT+';">'+xe(d.signoff)+'</p>';
+        s += '<table cellpadding="0" cellspacing="0" border="0"><tr>';
+        if (d.avatarUrl) {
+          s += '<td width="60" valign="middle" style="padding-right:14px;"><img src="'+xe(d.avatarUrl)+'" alt="'+xe(d.name||'')+'" width="48" height="48" style="display:block;width:48px;height:48px;border-radius:50%;object-fit:cover;border:1px solid '+BORD+';" /></td>';
+        } else {
+          s += '<td width="60" valign="middle" style="padding-right:14px;"><div style="width:48px;height:48px;border-radius:50%;background:'+CARD+';border:1px solid '+BORD+';display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:'+T3+';font-family:'+FONT+';">'+xe((d.name||'?')[0])+'</div></td>';
+        }
+        s += '<td valign="middle"><p style="margin:0 0 2px;padding:0;color:'+T1+';font-size:15px;font-weight:700;font-family:'+FONT+';">'+xe(d.name)+'</p><p style="margin:0;padding:0;color:'+T3+';font-size:13px;font-family:'+FONT+';">'+xe(d.title)+'</p></td></tr></table>';
+        if (d.ps) s += '<p style="margin:20px 0 0;padding:16px 0 0;color:'+T3+';font-size:13px;line-height:1.6;border-top:1px solid '+BORD+';font-family:'+FONT+';">'+xe('P.S. '+d.ps)+'</p>';
+        s += '</td></tr></table>';
+        return s;
+      }
+
+      case 'testimonial': {
+        const stars = Math.min(5, d.stars||0);
+        let t = '<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="'+BG+'" style="background:'+BG+';"><tr><td style="padding:0 '+P+' 16px;">';
+        t += '<!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="'+CARD+'" style="background:'+CARD+';border:1px solid '+BORD+';padding:24px;"><![endif]-->';
+        t += '<!--[if !mso]><!--><table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="'+CARD+'" style="background:'+CARD+';border:1px solid '+BORD+';border-radius:10px;"><tr><td style="padding:24px;"><!--<![endif]-->';
+        if (stars>0) t += '<p style="margin:0 0 12px;padding:0;font-size:14px;letter-spacing:2px;color:'+accent+';font-family:'+FONT+';">'+('★').repeat(stars)+'</p>';
+        t += '<p style="margin:0 0 18px;padding:0;color:'+T1+';font-size:16px;font-weight:500;line-height:1.5;font-family:'+FONT+'">"'+xe(d.quote)+'"</p>';
+        t += '<table cellpadding="0" cellspacing="0" border="0"><tr>';
+        if (d.avatarUrl) {
+          t += '<td width="48" valign="middle" style="padding-right:12px;"><img src="'+xe(d.avatarUrl)+'" alt="'+xe(d.author||'')+'" width="36" height="36" style="display:block;width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid '+BORD+';" /></td>';
+        } else {
+          t += '<td width="48" valign="middle" style="padding-right:12px;"><table cellpadding="0" cellspacing="0" border="0"><tr><td width="36" height="36" align="center" valign="middle" bgcolor="'+BORD+'" style="background:'+BORD+';border-radius:50%;font-size:14px;font-weight:700;color:'+T3+';font-family:'+FONT+';">'+xe((d.author||'?')[0])+'</td></tr></table></td>';
+        }
+        t += '<td valign="middle"><p style="margin:0 0 1px;padding:0;font-size:13px;font-weight:600;color:'+T2+';font-family:'+FONT+';">'+xe(d.author)+(d.company?'<span style="color:'+T3+';font-weight:400;"> &middot; '+xe(d.company)+'</span>':'')+'</p>'+(d.role?'<p style="margin:0;padding:0;font-size:12px;color:'+T3+';font-family:'+FONT+';">'+xe(d.role)+'</p>':'')+'</td></tr></table>';
+        t += '<!--[if mso]></td></tr></table><![endif]--><!--[if !mso]><!--></td></tr></table><!--<![endif]--></td></tr></table>';
+        return t;
+      }
+
+      case 'changelog': {
+        const TC={'new':accent,'improved':'#3EB5A5','fixed':'#E3B24A','removed':'#E24530'};
+        const items=d.items||[];
+        let c = '<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="'+BG+'" style="background:'+BG+';"><tr><td style="padding:0 '+P+' 16px;">';
+        c += '<!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="'+CARD+'" style="background:'+CARD+';border:1px solid '+BORD+';"><![endif]-->';
+        c += '<!--[if !mso]><!--><table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="'+CARD+'" style="background:'+CARD+';border:1px solid '+BORD+';border-radius:10px;"><!--<![endif]-->';
+        c += '<tr><td style="padding:14px 20px;border-bottom:1px solid '+BORD+';">';
+        c += '<span style="display:inline-block;padding:3px 10px;border-radius:9999px;background:'+accent+';color:#000000;font-size:11px;font-weight:700;letter-spacing:1px;font-family:'+FONT+';">'+xe(d.version)+'</span>';
+        if (d.date) c += '<span style="font-size:12px;color:'+T3+';margin-left:10px;font-family:'+MONO+';">'+xe(d.date)+'</span>';
+        c += '</td></tr>';
+        c += '<tr><td style="padding:16px 20px;">';
+        items.forEach((item,i)=>{
+          const tc=TC[item.type]||TC.new;
+          c += '<table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom:'+(i<items.length-1?'12':'0')+'px;"><tr>';
+          c += '<td width="72" valign="top" style="padding-right:8px;padding-top:1px;"><span style="display:inline-block;padding:2px 8px;background:'+tc+';color:#000;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-family:'+FONT+';">'+xe(item.type)+'</span></td>';
+          c += '<td valign="top"><span style="font-size:14px;color:'+T2+';line-height:1.5;font-family:'+FONT+';">'+xe(item.text)+'</span></td>';
+          c += '</tr></table>';
+        });
+        c += '</td></tr>';
+        c += '<!--[if mso]></td></tr></table><![endif]--><!--[if !mso]><!--></table><!--<![endif]--></td></tr></table>';
+        return c;
+      }
+
+      case 'event': {
+        let e = '<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="'+BG+'" style="background:'+BG+';border-bottom:1px solid '+BORD+';"><tr><td style="padding:32px '+P+' 28px;">';
+        if (d.tag||d.date||d.time) {
+          e += '<p style="margin:0 0 16px;padding:0;">';
+          if (d.tag) e += '<span style="display:inline-block;padding:3px 11px;border-radius:9999px;background:'+accent+';color:#000000;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;font-family:'+FONT+';">'+xe(d.tag)+'</span>';
+          if (d.date||d.time) e += '<span style="font-size:12px;color:'+T3+';margin-left:10px;font-family:'+MONO+';">'+xe([d.date,d.time].filter(Boolean).join(' · '))+'</span>';
+          e += '</p>';
+        }
+        if (d.headline) e += '<h2 style="margin:0 0 10px;padding:0;color:'+T1+';font-size:26px;font-weight:700;line-height:1.15;letter-spacing:-0.5px;font-family:'+FONT+';">'+xe(d.headline)+'</h2>';
+        if (d.sub) e += '<p style="margin:0 0 20px;padding:0;color:'+T2+';font-size:15px;line-height:1.6;font-family:'+FONT+';">'+xe(d.sub)+'</p>';
+        if (d.ctaText) e += vmlBtn(d.ctaUrl||'#', d.ctaText, accent, '#000000', 220);
+        e += '</td></tr></table>';
+        return e;
+      }
+
+      case 'sociallinks': {
+        const links=d.links||[];
+        let sl = '<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="'+BG+'" style="background:'+BG+';border-top:1px solid '+BORD+';"><tr><td style="padding:20px '+P+' 24px;">';
+        if (d.label) sl += '<p style="margin:0 0 14px;padding:0;font-size:11px;font-weight:700;color:'+T3+';letter-spacing:2px;text-transform:uppercase;font-family:'+FONT+';">'+xe(d.label)+'</p>';
+        links.forEach((l,i)=>{
+          sl += '<a href="'+xe(l.url||'#')+'" style="display:inline-block;margin:'+(i<links.length-1?'0 8px 8px 0':'0');
+          sl += ';padding:6px 14px;border-radius:9999px;border:1px solid '+BORD+';background:'+CARD+';text-decoration:none;font-family:'+FONT+';">';
+          sl += '<span style="font-size:11px;font-weight:700;color:'+accent+';">'+xe(l.platform)+'</span>';
+          sl += '<span style="font-size:11px;color:'+T3+';margin-left:6px;">'+xe(l.handle)+'</span>';
+          sl += '</a>';
+        });
+        sl += '</td></tr></table>';
+        return sl;
+      }
     }
   };
 
@@ -684,6 +770,81 @@ const blockToMjml = (b, accent, contrast) => {
       });
       ml += '</mj-column></mj-section>';
       return ml;
+    }
+
+    case 'signature': {
+      const P2 = '32px';
+      let s = `<mj-section padding="28px ${P2} 24px" border-top="1px solid #1A1A1A">`;
+      if (d.signoff) s += `<mj-column><mj-text font-size="15px" color="rgba(255,255,255,0.65)" line-height="1.6" padding="0 0 20px 0" font-family="Inter,sans-serif">${xe(d.signoff)}</mj-text>`;
+      else s += `<mj-column>`;
+      s += `<mj-table padding="0" font-family="Inter,sans-serif"><tr>`;
+      if (d.avatarUrl) {
+        s += `<td width="62" valign="middle"><img src="${xe(d.avatarUrl)}" alt="${xe(d.name||'')}" width="48" height="48" style="display:block;width:48px;height:48px;border-radius:50%;object-fit:cover;border:1px solid #1A1A1A;" /></td>`;
+      } else {
+        s += `<td width="62" valign="middle"><div style="width:48px;height:48px;border-radius:50%;background:#1A1A1A;border:1px solid #222226;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#606068;font-family:Inter,sans-serif;">${xe((d.name||'?')[0])}</div></td>`;
+      }
+      s += `<td valign="middle"><p style="margin:0 0 2px;padding:0;font-size:15px;font-weight:700;color:#ffffff;font-family:Inter,sans-serif;">${xe(d.name)}</p><p style="margin:0;padding:0;font-size:13px;color:#606068;font-family:Inter,sans-serif;">${xe(d.title)}</p></td></tr></mj-table>`;
+      if (d.ps) s += `<mj-text font-size="13px" color="#606068" line-height="1.6" padding="16px 0 0" border-top="1px solid #1A1A1A" font-family="Inter,sans-serif"><b style="color:#b0b0b8;">P.S.</b> ${xe(d.ps)}</mj-text>`;
+      s += `</mj-column></mj-section>`;
+      return s;
+    }
+
+    case 'testimonial': {
+      const stars = Math.min(5, d.stars||0);
+      let t = `<mj-section padding="0 ${P} 16px"><mj-column background-color="#111113" border="1px solid rgba(255,255,255,0.09)" border-radius="10px" padding="24px">`;
+      if (stars > 0) t += `<mj-text font-size="14px" color="${accent}" padding="0 0 12px 0" font-family="Inter,sans-serif">${'★'.repeat(stars)}</mj-text>`;
+      t += `<mj-text font-size="16px" font-weight="500" color="#ffffff" line-height="1.5" padding="0 0 18px 0" font-family="Inter,sans-serif">"${xe(d.quote)}"</mj-text>`;
+      t += `<mj-table padding="0" font-family="Inter,sans-serif"><tr>`;
+      if (d.avatarUrl) {
+        t += `<td width="48" valign="middle"><img src="${xe(d.avatarUrl)}" alt="${xe(d.author||'')}" width="36" height="36" style="display:block;width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid #222226;" /></td>`;
+      } else {
+        t += `<td width="48" valign="middle"><div style="width:36px;height:36px;border-radius:50%;background:#222226;font-size:14px;font-weight:700;color:#606068;text-align:center;line-height:36px;font-family:Inter,sans-serif;">${xe((d.author||'?')[0])}</div></td>`;
+      }
+      t += `<td valign="middle"><p style="margin:0 0 1px;padding:0;font-size:13px;font-weight:600;color:rgba(255,255,255,0.85);font-family:Inter,sans-serif;">${xe(d.author)}${d.company?` <span style="color:#606068;font-weight:400;">· ${xe(d.company)}</span>`:''}</p>${d.role?`<p style="margin:0;padding:0;font-size:12px;color:#606068;font-family:Inter,sans-serif;">${xe(d.role)}</p>`:''}</td></tr></mj-table>`;
+      t += `</mj-column></mj-section>`;
+      return t;
+    }
+
+    case 'changelog': {
+      const TC={'new':accent,'improved':'#3EB5A5','fixed':'#E3B24A','removed':'#E24530'};
+      const items = d.items||[];
+      let c = `<mj-section padding="0 ${P} 16px"><mj-column background-color="#111113" border="1px solid rgba(255,255,255,0.09)" border-radius="10px" padding="0">`;
+      c += `<mj-text padding="14px 20px" border-bottom="1px solid #1A1A1A" font-family="Inter,sans-serif"><span style="display:inline-block;padding:3px 10px;border-radius:9999px;background:${accent};color:#000;font-size:11px;font-weight:700;letter-spacing:1px;">${xe(d.version)}</span>${d.date?` <span style="font-size:12px;color:#606068;margin-left:10px;font-family:'Courier New',monospace;">${xe(d.date)}</span>`:''}</mj-text>`;
+      c += `<mj-text padding="16px 20px" font-family="Inter,sans-serif">`;
+      items.forEach((item,i) => {
+        const tc = TC[item.type]||TC.new;
+        c += `<table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom:${i<items.length-1?'12':'0'}px;"><tr><td width="72" valign="top" style="padding-right:8px;"><span style="display:inline-block;padding:2px 8px;background:${tc};color:#000;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;">${xe(item.type)}</span></td><td valign="top"><span style="font-size:14px;color:#b0b0b8;line-height:1.5;font-family:Inter,sans-serif;">${xe(item.text)}</span></td></tr></table>`;
+      });
+      c += `</mj-text></mj-column></mj-section>`;
+      return c;
+    }
+
+    case 'event': {
+      let e = `<mj-section padding="32px ${P} 28px" border-bottom="1px solid #1A1A1A">`;
+      e += `<mj-column>`;
+      if (d.tag||d.date||d.time) {
+        e += `<mj-text padding="0 0 16px 0" font-family="Inter,sans-serif">`;
+        if (d.tag) e += `<span style="display:inline-block;padding:3px 11px;border-radius:9999px;background:${accent};color:#000;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">${xe(d.tag)}</span>`;
+        if (d.date||d.time) e += ` <span style="font-size:12px;color:#606068;font-family:'Courier New',monospace;">${xe([d.date,d.time].filter(Boolean).join(' · '))}</span>`;
+        e += `</mj-text>`;
+      }
+      if (d.headline) e += `<mj-text font-size="26px" font-weight="700" color="#ffffff" line-height="1.15" padding="0 0 10px 0" font-family="Inter,sans-serif">${xe(d.headline)}</mj-text>`;
+      if (d.sub) e += `<mj-text font-size="15px" color="rgba(255,255,255,0.65)" line-height="1.6" padding="0 0 20px 0" font-family="Inter,sans-serif">${xe(d.sub)}</mj-text>`;
+      if (d.ctaText) e += `<mj-button href="${xe(d.ctaUrl||'#')}" background-color="${accent}" color="#000000" border-radius="9999px" font-size="13px" font-weight="700" padding="10px 22px" inner-padding="0" font-family="Inter,sans-serif" align="left">${xe(d.ctaText)}</mj-button>`;
+      e += `</mj-column></mj-section>`;
+      return e;
+    }
+
+    case 'sociallinks': {
+      const links = d.links||[];
+      let sl = `<mj-section padding="20px ${P} 24px" border-top="1px solid #1A1A1A"><mj-column>`;
+      if (d.label) sl += `<mj-text font-size="11px" font-weight="700" color="#606068" padding="0 0 14px 0" letter-spacing="2px" font-family="Inter,sans-serif">${xe(d.label).toUpperCase()}</mj-text>`;
+      sl += `<mj-text padding="0" font-family="Inter,sans-serif">`;
+      links.forEach((l,i) => {
+        sl += `<a href="${xe(l.url||'#')}" style="display:inline-block;margin:${i<links.length-1?'0 8px 8px 0':'0'};padding:6px 14px;border-radius:9999px;border:1px solid #222226;background:#111113;text-decoration:none;"><span style="font-size:11px;font-weight:700;color:${accent};font-family:Inter,sans-serif;">${xe(l.platform)}</span><span style="font-size:11px;color:#606068;margin-left:6px;font-family:Inter,sans-serif;">${xe(l.handle)}</span></a>`;
+      });
+      sl += `</mj-text></mj-column></mj-section>`;
+      return sl;
     }
   }
 };
