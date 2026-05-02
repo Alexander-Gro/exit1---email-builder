@@ -8,38 +8,38 @@
 
 /* ── Dark mode (default) ── */
 :root, [data-mode="dark"] {
-  --ed-bg:            #1E1E27;
-  --ed-panel:         #25252F;
-  --ed-panel-2:       #2D2D3A;
-  --ed-border:        rgba(255,255,255,0.08);
-  --ed-border-strong: rgba(255,255,255,0.18);
-  --ed-text:          #F5F5F5;
-  --ed-text-mute:     rgba(245,245,245,0.60);
-  --ed-text-dim:      rgba(245,245,245,0.38);
-  --ed-accent:        #38AD85;
-  --ed-accent-hover:  #2D9E76;
+  --ed-bg:            #15151B;
+  --ed-panel:         #1E1E27;
+  --ed-panel-2:       #27273A;
+  --ed-border:        rgba(255,255,255,0.07);
+  --ed-border-strong: rgba(255,255,255,0.16);
+  --ed-text:          #F0F0F5;
+  --ed-text-mute:     rgba(240,240,245,0.60);
+  --ed-text-dim:      rgba(240,240,245,0.36);
+  --ed-accent:        #3F9081;
+  --ed-accent-hover:  #347a6d;
   --ed-danger:        #F87171;
-  --ed-canvas-bg:     #141419;
-  --ed-canvas-line:   rgba(255,255,255,0.032);
-  --ed-canvas-glow:   rgba(56,173,133,0.07);
+  --ed-canvas-bg:     #15151B;
+  --ed-canvas-line:   rgba(255,255,255,0.030);
+  --ed-canvas-glow:   rgba(63,144,129,0.07);
 }
 
 /* ── Light mode ── */
 [data-mode="light"] {
-  --ed-bg:            #F9F7EA;
-  --ed-panel:         #F0ECDA;
-  --ed-panel-2:       #E7E2C8;
-  --ed-border:        rgba(0,0,0,0.09);
-  --ed-border-strong: rgba(0,0,0,0.22);
-  --ed-text:          #2A2A34;
-  --ed-text-mute:     rgba(42,42,52,0.65);
-  --ed-text-dim:      rgba(42,42,52,0.40);
-  --ed-accent:        #2D9E76;
-  --ed-accent-hover:  #249068;
+  --ed-bg:            #F4F4F0;
+  --ed-panel:         #EBEBЕ4;
+  --ed-panel-2:       #E0E0D8;
+  --ed-border:        rgba(0,0,0,0.08);
+  --ed-border-strong: rgba(0,0,0,0.20);
+  --ed-text:          #1A1A22;
+  --ed-text-mute:     rgba(26,26,34,0.62);
+  --ed-text-dim:      rgba(26,26,34,0.38);
+  --ed-accent:        #3F9081;
+  --ed-accent-hover:  #347a6d;
   --ed-danger:        #DC2626;
-  --ed-canvas-bg:     #EDEADE;
+  --ed-canvas-bg:     #E8E8E2;
   --ed-canvas-line:   rgba(0,0,0,0.04);
-  --ed-canvas-glow:   rgba(45,158,118,0.06);
+  --ed-canvas-glow:   rgba(63,144,129,0.05);
 }
 
 html, body {

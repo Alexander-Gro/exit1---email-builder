@@ -93,9 +93,9 @@
    Plan themes — set on .e1-shell via class
    ══════════════════════════════════════════════ */
 .plan-free   { --e1-accent: #B2D3E6; --e1-accent-contrast: #000000; }
-.plan-nano   { --e1-accent: #4A8DB8; --e1-accent-contrast: #ffffff; }
-.plan-scale  { --e1-accent: #3EB5A5; --e1-accent-contrast: #ffffff; }
-.plan-agency { --e1-accent: #3FB873; --e1-accent-contrast: #ffffff; }
+.plan-nano   { --e1-accent: #7C3AED; --e1-accent-contrast: #ffffff; }
+.plan-pro    { --e1-accent: #F59E0B; --e1-accent-contrast: #000000; }
+.plan-agency { --e1-accent: #3F9081; --e1-accent-contrast: #ffffff; }
 
 /* ══════════════════════════════════════════════
    Email surface themes
@@ -195,6 +195,25 @@
   --e1-shell-text-mid:     rgba(255,255,255,0.68);
   --e1-shell-text-close:   rgba(255,255,255,0.86);
   --e1-shell-text-dim:     rgba(255,255,255,0.35);
+}
+
+/* Exit1 App — matches the actual exit1.dev app background */
+.surface-app {
+  --e1-shell-bg:           #15151B;
+  --e1-shell-card:         rgba(30,30,39,0.94);
+  --e1-shell-card-deep:    #0f0f14;
+  --e1-shell-grid-line:    rgba(255,255,255,0.036);
+  --e1-shell-glow:         rgba(63,144,129,0.10);
+  --e1-shell-border:       rgba(255,255,255,0.07);
+  --e1-shell-border-mid:   rgba(255,255,255,0.09);
+  --e1-shell-edge-lit:     rgba(255,255,255,0.11);
+  --e1-shell-surface-tint: rgba(255,255,255,0.03);
+  --e1-shell-step-ring:    rgba(0,0,0,0.35);
+  --e1-shell-text:         rgba(255,255,255,0.62);
+  --e1-shell-text-strong:  #f0f0f5;
+  --e1-shell-text-mid:     rgba(255,255,255,0.68);
+  --e1-shell-text-close:   rgba(255,255,255,0.85);
+  --e1-shell-text-dim:     rgba(255,255,255,0.36);
 }
 
 /* ── Light email preview mode ──

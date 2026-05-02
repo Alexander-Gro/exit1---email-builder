@@ -9,23 +9,24 @@ const uid = () => Math.random().toString(36).slice(2, 10);
 
 /* ── Plan registry (Design Manual §3) ── */
 const PLANS = {
-  free:   { label:'Free',   accent:'#B2D3E6', contrast:'#000000', desc:'Entry level',  cls:'plan-free'   },
-  nano:   { label:'Nano',   accent:'#4A8DB8', contrast:'#ffffff', desc:'Main brand',   cls:'plan-nano'   },
-  scale:  { label:'Scale',  accent:'#3EB5A5', contrast:'#ffffff', desc:'High speed',   cls:'plan-scale'  },
-  agency: { label:'Agency', accent:'#3FB873', contrast:'#ffffff', desc:'Enterprise',   cls:'plan-agency' },
+  free:   { label:'Free',   accent:'#B2D3E6', contrast:'#000000', desc:'10 checks · 5 min',   cls:'plan-free'   },
+  nano:   { label:'Nano',   accent:'#7C3AED', contrast:'#ffffff', desc:'50 checks · 2 min',   cls:'plan-nano'   },
+  pro:    { label:'Pro',    accent:'#F59E0B', contrast:'#000000', desc:'500 checks · 30s',    cls:'plan-pro'    },
+  agency: { label:'Agency', accent:'#3F9081', contrast:'#ffffff', desc:'1,000 checks · 15s',  cls:'plan-agency' },
 };
 
 /* ── Color scheme presets (accent colours + matching email surface) ── */
 const COLOR_SCHEMES = [
-  { id:'default', label:'exit1',   surface:'void',      dots:['#B2D3E6','#4A8DB8','#3EB5A5','#3FB873'], colors:{ free:'#B2D3E6', nano:'#4A8DB8', scale:'#3EB5A5', agency:'#3FB873' } },
-  { id:'green',   label:'Green',   surface:'slate',     dots:['#8DD5BB','#38AD85','#2D9E76','#1E8E60'], colors:{ free:'#8DD5BB', nano:'#38AD85', scale:'#2D9E76', agency:'#1E8E60' } },
-  { id:'purple',  label:'Purple',  surface:'midnight',  dots:['#C4B5FD','#8B5CF6','#7C3AED','#6D28D9'], colors:{ free:'#C4B5FD', nano:'#8B5CF6', scale:'#7C3AED', agency:'#6D28D9' } },
-  { id:'amber',   label:'Amber',   surface:'graphite',  dots:['#FDE68A','#F59E0B','#D97706','#B45309'], colors:{ free:'#FDE68A', nano:'#F59E0B', scale:'#D97706', agency:'#B45309' } },
-  { id:'rose',    label:'Rose',    surface:'rose',      dots:['#FECDD3','#FB7185','#F43F5E','#E11D48'], colors:{ free:'#FECDD3', nano:'#FB7185', scale:'#F43F5E', agency:'#E11D48' } },
+  { id:'default', label:'exit1',   surface:'app',       dots:['#B2D3E6','#7C3AED','#F59E0B','#3F9081'], colors:{ free:'#B2D3E6', nano:'#7C3AED', pro:'#F59E0B', agency:'#3F9081' } },
+  { id:'green',   label:'Green',   surface:'slate',     dots:['#8DD5BB','#38AD85','#2D9E76','#1E8E60'], colors:{ free:'#8DD5BB', nano:'#38AD85', pro:'#2D9E76', agency:'#1E8E60' } },
+  { id:'purple',  label:'Purple',  surface:'midnight',  dots:['#C4B5FD','#8B5CF6','#7C3AED','#6D28D9'], colors:{ free:'#C4B5FD', nano:'#8B5CF6', pro:'#7C3AED', agency:'#6D28D9' } },
+  { id:'amber',   label:'Amber',   surface:'graphite',  dots:['#FDE68A','#F59E0B','#D97706','#B45309'], colors:{ free:'#FDE68A', nano:'#F59E0B', pro:'#D97706', agency:'#B45309' } },
+  { id:'rose',    label:'Rose',    surface:'rose',      dots:['#FECDD3','#FB7185','#F43F5E','#E11D48'], colors:{ free:'#FECDD3', nano:'#FB7185', pro:'#F43F5E', agency:'#E11D48' } },
   { id:'custom',  label:'Custom',  surface:null,        dots:[], colors:null },
 ];
 
 const EMAIL_SURFACES = [
+  { id:'app',       label:'App',       bg:'#15151B',  desc:'Exit1 app dark' },
   { id:'void',      label:'Void',      bg:'#000000',  desc:'Pure black' },
   { id:'slate',     label:'Slate',     bg:'#21212B',  desc:'Blue-gray' },
   { id:'midnight',  label:'Midnight',  bg:'#0E0E1A',  desc:'Deep purple' },
@@ -44,7 +45,7 @@ const hexLuminance = hex => {
 const autoContrast = hex => hexLuminance(hex) > 0.35 ? '#000000' : '#ffffff';
 
 /* ── Plan colour resolvers ── */
-const getPlanColor   = (m, plan) => (m.planColors&&m.planColors[plan]) || PLANS[plan]?.accent   || '#4A8DB8';
+const getPlanColor   = (m, plan) => (m.planColors&&m.planColors[plan]) || PLANS[plan]?.accent   || '#3F9081';
 const getPlanContrast= (m, plan) => (m.planColors&&m.planColors[plan]) ? autoContrast(m.planColors[plan]) : (PLANS[plan]?.contrast || '#ffffff');
 const getAccent      = m => m.accentOverride || getPlanColor(m, m.plan||'nano');
 const getContrast    = m => m.accentOverride ? autoContrast(m.accentOverride) : getPlanContrast(m, m.plan||'nano');
@@ -54,19 +55,30 @@ const EDITOR_MODE_KEY = 'exit1-editor-mode';
 
 /* ── Seed ── */
 const SEED = {
-  meta: { name:'Welcome · Free tier', subject:'You just stopped flying blind', preview:'Two minutes of setup. Then we watch.', showGrid:true, plan:'free', accentOverride:'', emailMode:'dark', planColors:{}, colorScheme:'default', emailSurface:'void', emailBg:'' },
+  meta: { name:'Welcome · Free tier', subject:'You just stopped flying blind', preview:'Your first check is already watching. Here\'s what happens next.', showGrid:true, plan:'free', accentOverride:'', emailMode:'dark', planColors:{}, colorScheme:'default', emailSurface:'app', emailBg:'' },
   blocks: [
-    { id:uid(), type:'header', data:BLOCKS.header.defaults() },
-    { id:uid(), type:'hero',   data:BLOCKS.hero.defaults()   },
-    { id:uid(), type:'body',   data:BLOCKS.body.defaults()   },
-    { id:uid(), type:'steps',  data:BLOCKS.steps.defaults()  },
+    { id:uid(), type:'header', data:{ logoMark:'e_', brandName:'exit1.dev', showStatus:true, statusText:'All systems operational', statusType:'up' } },
+    { id:uid(), type:'hero',   data:{ eyebrow:'Welcome to exit1.dev', heading:'You just stopped flying blind.', sub:'Your first check is already running. Here\'s what to do next — takes about two minutes.' } },
     { id:uid(), type:'body',   data:{ paragraphs:[
-      {text:'Once those two things are done, exit1 runs quietly in the background. You won\'t think about it until it matters — and when it does, you\'ll be glad it\'s there.',style:'normal'},
-      {text:'I\'ll check in tomorrow with a look at what your monitoring data is already telling you.',style:'normal'},
-      {text:'— The exit1.dev team',style:'close'},
+      {text:'Hey {{first_name}},', style:'lede'},
+      {text:'Most teams find out their site is down the same way their customers do: by accident. exit1.dev changes that — we check your services every few minutes and alert you the instant something goes wrong.', style:'normal'},
     ]}},
-    { id:uid(), type:'plan',   data:BLOCKS.plan.defaults()  },
-    { id:uid(), type:'footer', data:BLOCKS.footer.defaults() },
+    { id:uid(), type:'steps',  data:{ items:[
+      {number:'01', label:'Already done', title:'Add a check', body:'Paste any URL — your site, API, checkout flow, or background job. We start watching immediately, with SSL and response-time tracking built in.', ctaText:'View your dashboard', ctaUrl:'{{dashboard_url}}', ctaStyle:'ghost'},
+      {number:'02', label:'Do this now',  title:'Connect an alert channel', body:'Choose where to hear about problems: email, Slack, Discord, Teams, or SMS. Takes 30 seconds. Without this step, we\'re watching silently.', ctaText:'Set up alerts', ctaUrl:'{{alerts_url}}', ctaStyle:'primary'},
+      {number:'03', label:'Optional',     title:'Share a status page', body:'A public status page shows customers you\'re on top of things — even before they notice something is wrong. Your Free plan includes one page.', ctaText:'Create a status page', ctaUrl:'{{status_url}}', ctaStyle:'ghost'},
+    ]}},
+    { id:uid(), type:'stats',  data:{ items:[
+      {label:'Monitors', value:'10', sub:'on Free plan'},
+      {label:'Check interval', value:'5 min', sub:'upgrade for 30s'},
+      {label:'Data retention', value:'60 days', sub:'full history'},
+    ]}},
+    { id:uid(), type:'body',   data:{ paragraphs:[
+      {text:'Once alerts are connected, exit1.dev runs quietly in the background. You\'ll forget it\'s there — right up until it matters.', style:'normal'},
+      {text:'— The exit1.dev team', style:'close'},
+    ]}},
+    { id:uid(), type:'plan',   data:{ label:'Your current plan', tier:'Free', specs:['10 monitors', '5-minute check intervals', 'SSL certificate monitoring', 'Email alerts', '1 status page', '60-day data retention'], upsell:'Need 2-minute intervals, SMS alerts, or DNS monitoring? **Nano** starts at $9/month.' } },
+    { id:uid(), type:'footer', data:{ brand:'exit1.dev', links:[{text:'Dashboard', url:'{{dashboard_url}}'},{text:'Preferences', url:'{{preferences_url}}'},{text:'Unsubscribe', url:'{{unsubscribe_url}}'}] } },
   ],
 };
 
@@ -95,11 +107,11 @@ const generateInlineHtml = (draft) => {
 
   /* Resolve background from meta: explicit emailBg > surface theme > default black */
   const surfaceId = draft.meta.emailSurface || 'void';
-  const SURFACE_BG_MAP = { void:'#000000', slate:'#21212B', midnight:'#0E0E1A', graphite:'#141414', rose:'#1A1014' };
-  const SURFACE_CARD_MAP = { void:'#111113', slate:'#1e1e2c', midnight:'#16163a', graphite:'#1c1c1c', rose:'#201418' };
-  const SURFACE_BORD_MAP = { void:'#222226', slate:'#2a2a3c', midnight:'#232338', graphite:'#242424', rose:'#2e1c22' };
-  const SURFACE_T2_MAP   = { void:'#b0b0b8', slate:'#a8a8b8', midnight:'#a8a8c8', graphite:'#b0b0b0', rose:'#b8a8ac' };
-  const SURFACE_T3_MAP   = { void:'#606068', slate:'#585868', midnight:'#585878', graphite:'#606060', rose:'#685860' };
+  const SURFACE_BG_MAP   = { app:'#15151B', void:'#000000', slate:'#21212B', midnight:'#0E0E1A', graphite:'#141414', rose:'#1A1014' };
+  const SURFACE_CARD_MAP = { app:'#1e1e27', void:'#111113', slate:'#1e1e2c', midnight:'#16163a', graphite:'#1c1c1c', rose:'#201418' };
+  const SURFACE_BORD_MAP = { app:'#27273a', void:'#222226', slate:'#2a2a3c', midnight:'#232338', graphite:'#242424', rose:'#2e1c22' };
+  const SURFACE_T2_MAP   = { app:'#a8a8b8', void:'#b0b0b8', slate:'#a8a8b8', midnight:'#a8a8c8', graphite:'#b0b0b0', rose:'#b8a8ac' };
+  const SURFACE_T3_MAP   = { app:'#585870', void:'#606068', slate:'#585868', midnight:'#585878', graphite:'#606060', rose:'#685860' };
 
   const BG    = draft.meta.emailBg || SURFACE_BG_MAP[surfaceId]   || '#000000';
   const CARD  = SURFACE_CARD_MAP[surfaceId] || '#111113';
@@ -1377,7 +1389,7 @@ const EmailApp = ({ view, setView }) => {
           {editorMode==='dark'?'☀️':'🌙'}
         </button>
 
-        <button className="topbar-btn ghost" onClick={()=>{if(confirm('Start blank?')){setDraft({meta:{name:'Untitled',subject:'',preview:'',showGrid:true,plan:'nano',accentOverride:'',emailMode:'dark',planColors:{},colorScheme:'default',emailSurface:'void',emailBg:'',logoUrl:''},blocks:[]});setSelectedId(null);}}}>New</button>
+        <button className="topbar-btn ghost" onClick={()=>{if(confirm('Start blank?')){setDraft({meta:{name:'Untitled',subject:'',preview:'',showGrid:true,plan:'nano',accentOverride:'',emailMode:'dark',planColors:{},colorScheme:'default',emailSurface:'app',emailBg:'',logoUrl:''},blocks:[]});setSelectedId(null);}}}>New</button>
         <button className="topbar-btn ghost" onClick={importJson}>Import</button>
         <button className="topbar-btn ghost" onClick={exportJson}>Save JSON</button>
         <button className="topbar-btn ghost" onClick={()=>{if(confirm('Reset to welcome email?')){setDraft(SEED);setSelectedId(null);}}}>Reset</button>

@@ -218,9 +218,9 @@ const BLOCKS = {
   stats: {
     type:'stats', label:'Stat row', icon:'#',
     defaults: ()=>({items:[
-      {label:'Uptime',   value:'99.98%', sub:'last 30 days'},
-      {label:'Checks',   value:'3',      sub:'active'},
-      {label:'Response', value:'142ms',  sub:'median'},
+      {label:'Monitors',  value:'3',       sub:'active checks'},
+      {label:'Uptime',    value:'99.98%',  sub:'last 30 days'},
+      {label:'Response',  value:'142ms',   sub:'median TTFB'},
     ]}),
     render: d=>(
       <section className="e1-stats">
@@ -256,7 +256,7 @@ const BLOCKS = {
   /* ── Feature card ── */
   feature: {
     type:'feature', label:'Feature card', icon:'▦',
-    defaults: ()=>({imgUrl:'', mediaLabel:'[ Screenshot placeholder ]', imgAlt:'', heading:'New: Domain Intelligence', body:'Track domain registration expiry automatically across every URL you monitor.', ctaText:'', ctaUrl:'', ctaStyle:'ghost'}),
+    defaults: ()=>({imgUrl:'', mediaLabel:'[ Screenshot placeholder ]', imgAlt:'', heading:'8 check types, one engine', body:'HTTP, heartbeat, DNS, ICMP, TCP/UDP, WebSocket, and redirect monitoring — all on the same VPS-powered execution engine with per-stage timing and instant alerts.', ctaText:'See all check types', ctaUrl:'{{dashboard_url}}', ctaStyle:'ghost'}),
     render: d=>(
       <div className="e1-feature">
         {d.imgUrl
@@ -294,7 +294,7 @@ const BLOCKS = {
   /* ── Quote ── */
   quote: {
     type:'quote', label:'Quote', icon:'"',
-    defaults: ()=>({quote:'exit1 told us about the outage four minutes before our users would have.',author:'Ana Reyes',role:'CTO, Stripe Ledger'}),
+    defaults: ()=>({quote:'We were down for six minutes before exit1.dev told us. Now we know in under 30 seconds — before a single customer notices.',author:'Alex Chen',role:'Lead Engineer, SaaS team'}),
     render: d=>(
       <div className="e1-quote">
         <blockquote>"{d.quote}"</blockquote>
@@ -316,7 +316,7 @@ const BLOCKS = {
   /* ── Plan card ── */
   plan: {
     type:'plan', label:'Plan card', icon:'▭',
-    defaults: ()=>({label:'Your plan', tier:'Free', specs:['10 checks','5-minute intervals','SSL monitoring','Email alerts'], upsell:'Need faster detection or SMS? Take a look at **Nano** when you\'re ready.'}),
+    defaults: ()=>({label:'Your current plan', tier:'Free', specs:['10 monitors','5-minute check intervals','SSL certificate monitoring','Email alerts only','1 status page','60-day data retention'], upsell:'Need 2-minute intervals, DNS monitoring, or SMS alerts? **Nano** starts at $9/month.'}),
     render: d=>(
       <aside className="e1-plan" aria-label="Your plan">
         <div className="e1-plan-head">
@@ -420,10 +420,10 @@ const BLOCKS = {
   checklist: {
     type:'checklist', label:'Checklist', icon:'✓',
     defaults: ()=>({ heading:'What you get on Nano', items:[
-      {text:'200 checks — 20× more than Free',checked:true},
-      {text:'2-minute intervals — 2.5× faster detection',checked:true},
-      {text:'SMS alerts for urgent notifications',checked:true},
+      {text:'50 monitors — 5× more than Free',checked:true},
+      {text:'2-minute intervals — faster than Free\'s 5 min',checked:true},
       {text:'Domain Intelligence — auto expiry tracking',checked:true},
+      {text:'DNS record monitoring with baseline alerts',checked:true},
       {text:'Maintenance windows & scheduled suppression',checked:true},
     ]}),
     render: d=>(
