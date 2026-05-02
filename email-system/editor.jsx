@@ -15,14 +15,22 @@ const PLANS = {
   agency: { label:'Agency', accent:'#3FB873', contrast:'#ffffff', desc:'Enterprise',   cls:'plan-agency' },
 };
 
-/* ── Color scheme presets ── */
+/* ── Color scheme presets (accent colours + matching email surface) ── */
 const COLOR_SCHEMES = [
-  { id:'default', label:'exit1',   dots:['#B2D3E6','#4A8DB8','#3EB5A5','#3FB873'], colors:{ free:'#B2D3E6', nano:'#4A8DB8', scale:'#3EB5A5', agency:'#3FB873' } },
-  { id:'green',   label:'Green',   dots:['#8DD5BB','#38AD85','#2D9E76','#1E8E60'], colors:{ free:'#8DD5BB', nano:'#38AD85', scale:'#2D9E76', agency:'#1E8E60' } },
-  { id:'purple',  label:'Purple',  dots:['#C4B5FD','#8B5CF6','#7C3AED','#6D28D9'], colors:{ free:'#C4B5FD', nano:'#8B5CF6', scale:'#7C3AED', agency:'#6D28D9' } },
-  { id:'amber',   label:'Amber',   dots:['#FDE68A','#F59E0B','#D97706','#B45309'], colors:{ free:'#FDE68A', nano:'#F59E0B', scale:'#D97706', agency:'#B45309' } },
-  { id:'rose',    label:'Rose',    dots:['#FECDD3','#FB7185','#F43F5E','#E11D48'], colors:{ free:'#FECDD3', nano:'#FB7185', scale:'#F43F5E', agency:'#E11D48' } },
-  { id:'custom',  label:'Custom',  dots:[], colors:null },
+  { id:'default', label:'exit1',   surface:'void',      dots:['#B2D3E6','#4A8DB8','#3EB5A5','#3FB873'], colors:{ free:'#B2D3E6', nano:'#4A8DB8', scale:'#3EB5A5', agency:'#3FB873' } },
+  { id:'green',   label:'Green',   surface:'slate',     dots:['#8DD5BB','#38AD85','#2D9E76','#1E8E60'], colors:{ free:'#8DD5BB', nano:'#38AD85', scale:'#2D9E76', agency:'#1E8E60' } },
+  { id:'purple',  label:'Purple',  surface:'midnight',  dots:['#C4B5FD','#8B5CF6','#7C3AED','#6D28D9'], colors:{ free:'#C4B5FD', nano:'#8B5CF6', scale:'#7C3AED', agency:'#6D28D9' } },
+  { id:'amber',   label:'Amber',   surface:'graphite',  dots:['#FDE68A','#F59E0B','#D97706','#B45309'], colors:{ free:'#FDE68A', nano:'#F59E0B', scale:'#D97706', agency:'#B45309' } },
+  { id:'rose',    label:'Rose',    surface:'rose',      dots:['#FECDD3','#FB7185','#F43F5E','#E11D48'], colors:{ free:'#FECDD3', nano:'#FB7185', scale:'#F43F5E', agency:'#E11D48' } },
+  { id:'custom',  label:'Custom',  surface:null,        dots:[], colors:null },
+];
+
+const EMAIL_SURFACES = [
+  { id:'void',      label:'Void',      bg:'#000000',  desc:'Pure black' },
+  { id:'slate',     label:'Slate',     bg:'#21212B',  desc:'Blue-gray' },
+  { id:'midnight',  label:'Midnight',  bg:'#0E0E1A',  desc:'Deep purple' },
+  { id:'graphite',  label:'Graphite',  bg:'#141414',  desc:'Warm dark' },
+  { id:'rose',      label:'Rose',      bg:'#1A1014',  desc:'Dark rose' },
 ];
 
 /* ── Colour helpers ── */
@@ -46,7 +54,7 @@ const EDITOR_MODE_KEY = 'exit1-editor-mode';
 
 /* ── Seed ── */
 const SEED = {
-  meta: { name:'Welcome · Free tier', subject:'You just stopped flying blind', preview:'Two minutes of setup. Then we watch.', showGrid:true, plan:'free', accentOverride:'', emailMode:'dark', planColors:{}, colorScheme:'default' },
+  meta: { name:'Welcome · Free tier', subject:'You just stopped flying blind', preview:'Two minutes of setup. Then we watch.', showGrid:true, plan:'free', accentOverride:'', emailMode:'dark', planColors:{}, colorScheme:'default', emailSurface:'void' },
   blocks: [
     { id:uid(), type:'header', data:BLOCKS.header.defaults() },
     { id:uid(), type:'hero',   data:BLOCKS.hero.defaults()   },
@@ -936,7 +944,7 @@ const Canvas = ({ draft, selectedId, onSelect, onReorder, onDelete, onDuplicate 
         <div className="empty-state">Drag a block from the left to start.<br/>Draft saves automatically.</div>
       )}
 
-      <div className={`e1-shell blocks-container${gridCls} ${planCls}${emailMode==='light'?' email-preview-light':''}`} style={{'--e1-accent':accent,'--e1-accent-contrast':getContrast(draft.meta)}}>
+      <div className={`e1-shell blocks-container${gridCls} ${planCls} surface-${draft.meta.emailSurface||'void'}${emailMode==='light'?' email-preview-light':''}`} style={{'--e1-accent':accent,'--e1-accent-contrast':getContrast(draft.meta)}}>
         {draft.blocks.map((b, idx) => (
           <React.Fragment key={b.id}>
             {dropIdx===idx&&<div className="drop-indicator"/>}
@@ -980,7 +988,7 @@ const BrandPanel = ({ draft, updateMeta, updateBlock, editorMode, setEditorMode 
   const applyScheme = id => {
     const scheme = COLOR_SCHEMES.find(s=>s.id===id);
     if (!scheme || !scheme.colors) { updateMeta({colorScheme:id}); return; }
-    updateMeta({ colorScheme:id, planColors:{...planColors, ...scheme.colors}, accentOverride:'' });
+    updateMeta({ colorScheme:id, planColors:{...planColors, ...scheme.colors}, accentOverride:'', emailSurface: scheme.surface || 'void' });
   };
 
   /* Update a single plan's colour */
@@ -1038,6 +1046,24 @@ const BrandPanel = ({ draft, updateMeta, updateBlock, editorMode, setEditorMode 
             ))}
           </div>
           <div className="help-text" style={{marginTop:6}}>Or pick individual colours per plan below.</div>
+        </div>
+
+        {/* ── Email surface theme ── */}
+        <div className="field">
+          <label>Email surface</label>
+          <div className="scheme-grid" style={{gridTemplateColumns:'repeat(5,1fr)'}}>
+            {EMAIL_SURFACES.map(s=>(
+              <div key={s.id}
+                className={`scheme-chip${(meta.emailSurface||'void')===s.id?' selected':''}`}
+                onClick={()=>updateMeta({emailSurface:s.id})}
+                title={s.desc}
+              >
+                <div className="scheme-dot" style={{background:s.bg,border:'1px solid rgba(255,255,255,0.15)'}}/>
+                <span style={{fontSize:10}}>{s.label}</span>
+              </div>
+            ))}
+          </div>
+          <div className="help-text" style={{marginTop:6}}>Background theme of the email canvas.</div>
         </div>
 
         {/* ── Per-plan colour pickers ── */}
@@ -1327,7 +1353,7 @@ const EmailApp = ({ view, setView }) => {
           {editorMode==='dark'?'☀️':'🌙'}
         </button>
 
-        <button className="topbar-btn ghost" onClick={()=>{if(confirm('Start blank?')){setDraft({meta:{name:'Untitled',subject:'',preview:'',showGrid:true,plan:'nano',accentOverride:'',emailMode:'dark',planColors:{},colorScheme:'default',logoUrl:''},blocks:[]});setSelectedId(null);}}}>New</button>
+        <button className="topbar-btn ghost" onClick={()=>{if(confirm('Start blank?')){setDraft({meta:{name:'Untitled',subject:'',preview:'',showGrid:true,plan:'nano',accentOverride:'',emailMode:'dark',planColors:{},colorScheme:'default',emailSurface:'void',logoUrl:''},blocks:[]});setSelectedId(null);}}}>New</button>
         <button className="topbar-btn ghost" onClick={importJson}>Import</button>
         <button className="topbar-btn ghost" onClick={exportJson}>Save JSON</button>
         <button className="topbar-btn ghost" onClick={()=>{if(confirm('Reset to welcome email?')){setDraft(SEED);setSelectedId(null);}}}>Reset</button>
