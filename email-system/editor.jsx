@@ -92,13 +92,22 @@ const generateInlineHtml = (draft) => {
   /* ── Resolved tokens — no CSS vars, Outlook-safe solid values ── */
   const FONT  = "Arial,Helvetica,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif";
   const MONO  = "'Courier New',Courier,monospace";
-  const BG    = '#000000';
-  const CARD  = '#111113';   // solid equiv of rgba(18,18,20,0.92)
-  const CARD2 = '#0d0d0f';   // slightly darker for alternates
+
+  /* Resolve background from meta: explicit emailBg > surface theme > default black */
+  const surfaceId = draft.meta.emailSurface || 'void';
+  const SURFACE_BG_MAP = { void:'#000000', slate:'#21212B', midnight:'#0E0E1A', graphite:'#141414', rose:'#1A1014' };
+  const SURFACE_CARD_MAP = { void:'#111113', slate:'#1e1e2c', midnight:'#16163a', graphite:'#1c1c1c', rose:'#201418' };
+  const SURFACE_BORD_MAP = { void:'#222226', slate:'#2a2a3c', midnight:'#232338', graphite:'#242424', rose:'#2e1c22' };
+  const SURFACE_T2_MAP   = { void:'#b0b0b8', slate:'#a8a8b8', midnight:'#a8a8c8', graphite:'#b0b0b0', rose:'#b8a8ac' };
+  const SURFACE_T3_MAP   = { void:'#606068', slate:'#585868', midnight:'#585878', graphite:'#606060', rose:'#685860' };
+
+  const BG    = draft.meta.emailBg || SURFACE_BG_MAP[surfaceId]   || '#000000';
+  const CARD  = SURFACE_CARD_MAP[surfaceId] || '#111113';
+  const CARD2 = CARD;
   const T1    = '#ffffff';
-  const T2    = '#b0b0b8';   // solid equiv of rgba(255,255,255,0.65)
-  const T3    = '#606068';   // solid equiv of rgba(255,255,255,0.38)
-  const BORD  = '#222226';   // solid border — Outlook cant do rgba on bgcolor
+  const T2    = SURFACE_T2_MAP[surfaceId]   || '#b0b0b8';
+  const T3    = SURFACE_T3_MAP[surfaceId]   || '#606068';
+  const BORD  = SURFACE_BORD_MAP[surfaceId] || '#222226';
   const P     = '32px';      // horizontal padding
 
   /* ── Outlook-safe button via VML ── */
@@ -582,20 +591,20 @@ const generateInlineHtml = (draft) => {
     #MessageViewBody a{color:inherit;text-decoration:none;font-size:inherit;font-family:inherit;font-weight:inherit;line-height:inherit;}
   </style>
 </head>
-<body id="body" style="margin:0;padding:0;background-color:#000000;width:100%!important;">
+<body id="body" style="margin:0;padding:0;background-color:${BG};width:100%!important;">
 
 <!-- Preview text + filler to prevent bleed-through -->
 <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;visibility:hidden;opacity:0;color:transparent;font-size:1px;line-height:1px;">${xe(draft.meta.preview)}&nbsp;&zwnj;&hairsp;&zwnj;&hairsp;&zwnj;&hairsp;&zwnj;&hairsp;&zwnj;&hairsp;&zwnj;&hairsp;&zwnj;&hairsp;&zwnj;&hairsp;&zwnj;&hairsp;&zwnj;&hairsp;&zwnj;&hairsp;&zwnj;&hairsp;&zwnj;&hairsp;&zwnj;&hairsp;&zwnj;&hairsp;&zwnj;&hairsp;&zwnj;&hairsp;&zwnj;&hairsp;&zwnj;&hairsp;&zwnj;&hairsp;&zwnj;&hairsp;</div>
 
-<!--[if mso | IE]><table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#000000"><tr><td align="center" bgcolor="#000000"><![endif]-->
-<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#000000" style="background-color:#000000;">
+<!--[if mso | IE]><table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}"><tr><td align="center" bgcolor="${BG}"><![endif]-->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background-color:${BG};">
   <tr>
-    <td align="center" bgcolor="#000000" style="background-color:#000000;padding:32px 16px;">
+    <td align="center" bgcolor="${BG}" style="background-color:${BG};padding:32px 16px;">
 
-      <!--[if mso | IE]><table width="600" cellpadding="0" cellspacing="0" border="0" align="center" bgcolor="#000000"><tr><td bgcolor="#000000"><![endif]-->
-      <table width="600" cellpadding="0" cellspacing="0" border="0" align="center" bgcolor="#000000"
-        style="max-width:600px;width:100%;background-color:#000000;border:1px solid #222226;">
-        <tr><td bgcolor="#000000" style="background-color:#000000;">
+      <!--[if mso | IE]><table width="600" cellpadding="0" cellspacing="0" border="0" align="center" bgcolor="${BG}"><tr><td bgcolor="${BG}"><![endif]-->
+      <table width="600" cellpadding="0" cellspacing="0" border="0" align="center" bgcolor="${BG}"
+        style="max-width:600px;width:100%;background-color:${BG};border:1px solid ${BORD};">
+        <tr><td bgcolor="${BG}" style="background-color:${BG};">
 
 ${body}
 
