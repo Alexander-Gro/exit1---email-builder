@@ -54,7 +54,7 @@ const EDITOR_MODE_KEY = 'exit1-editor-mode';
 
 /* ── Seed ── */
 const SEED = {
-  meta: { name:'Welcome · Free tier', subject:'You just stopped flying blind', preview:'Two minutes of setup. Then we watch.', showGrid:true, plan:'free', accentOverride:'', emailMode:'dark', planColors:{}, colorScheme:'default', emailSurface:'void' },
+  meta: { name:'Welcome · Free tier', subject:'You just stopped flying blind', preview:'Two minutes of setup. Then we watch.', showGrid:true, plan:'free', accentOverride:'', emailMode:'dark', planColors:{}, colorScheme:'default', emailSurface:'void', emailBg:'' },
   blocks: [
     { id:uid(), type:'header', data:BLOCKS.header.defaults() },
     { id:uid(), type:'hero',   data:BLOCKS.hero.defaults()   },
@@ -916,6 +916,7 @@ const Canvas = ({ draft, selectedId, onSelect, onReorder, onDelete, onDuplicate 
   const planCls   = PLANS[draft.meta.plan||'nano']?.cls || 'plan-nano';
   const gridCls   = draft.meta.showGrid ? '' : ' no-grid';
   const emailMode = draft.meta.emailMode || 'dark';
+  const emailBg   = draft.meta.emailBg   || '';
 
   const onDragStart = (e, id) => { setDragId(id); e.dataTransfer.effectAllowed='move'; try{e.dataTransfer.setData('text/plain',id);}catch{} };
   const onDragOver  = (e, idx) => { e.preventDefault(); const r=e.currentTarget.getBoundingClientRect(); setDropIdx((e.clientY-r.top)>r.height/2?idx+1:idx); };
@@ -928,7 +929,7 @@ const Canvas = ({ draft, selectedId, onSelect, onReorder, onDelete, onDuplicate 
   };
 
   return (
-    <div className={`canvas-wrap${emailMode==='light'?' email-light-preview':''}`} onDragOver={e=>e.preventDefault()} onDrop={onDrop} onClick={()=>onSelect(null)}>
+    <div className={`canvas-wrap${emailMode==='light'?' email-light-preview':''}`} style={emailBg?{background:emailBg}:{}} onDragOver={e=>e.preventDefault()} onDrop={onDrop} onClick={()=>onSelect(null)}>
       <div className="canvas-meta">
         <span>{draft.meta.name || 'Untitled'}</span>
         <span style={{display:'flex',alignItems:'center',gap:8}}>
@@ -1064,6 +1065,20 @@ const BrandPanel = ({ draft, updateMeta, updateBlock, editorMode, setEditorMode 
             ))}
           </div>
           <div className="help-text" style={{marginTop:6}}>Background theme of the email canvas.</div>
+        </div>
+
+        {/* ── Email background colour ── */}
+        <div className="field">
+          <label>Email background colour</label>
+          <div className="color-swatch">
+            <input type="color" value={meta.emailBg||'#000000'} onChange={e=>updateMeta({emailBg:e.target.value})} />
+            <input type="text" value={meta.emailBg||''} placeholder="Default (surface theme)"
+              onChange={e=>{ const v=e.target.value; if(!v||/^#[0-9a-fA-F]{0,6}$/.test(v)) updateMeta({emailBg:v}); }} />
+            {meta.emailBg&&(
+              <button className="mini-btn" style={{flexShrink:0}} onClick={()=>updateMeta({emailBg:''})}>↺</button>
+            )}
+          </div>
+          <div className="help-text">Overrides the canvas background. Leave blank to use the surface theme above.</div>
         </div>
 
         {/* ── Per-plan colour pickers ── */}
@@ -1353,7 +1368,7 @@ const EmailApp = ({ view, setView }) => {
           {editorMode==='dark'?'☀️':'🌙'}
         </button>
 
-        <button className="topbar-btn ghost" onClick={()=>{if(confirm('Start blank?')){setDraft({meta:{name:'Untitled',subject:'',preview:'',showGrid:true,plan:'nano',accentOverride:'',emailMode:'dark',planColors:{},colorScheme:'default',emailSurface:'void',logoUrl:''},blocks:[]});setSelectedId(null);}}}>New</button>
+        <button className="topbar-btn ghost" onClick={()=>{if(confirm('Start blank?')){setDraft({meta:{name:'Untitled',subject:'',preview:'',showGrid:true,plan:'nano',accentOverride:'',emailMode:'dark',planColors:{},colorScheme:'default',emailSurface:'void',emailBg:'',logoUrl:''},blocks:[]});setSelectedId(null);}}}>New</button>
         <button className="topbar-btn ghost" onClick={importJson}>Import</button>
         <button className="topbar-btn ghost" onClick={exportJson}>Save JSON</button>
         <button className="topbar-btn ghost" onClick={()=>{if(confirm('Reset to welcome email?')){setDraft(SEED);setSelectedId(null);}}}>Reset</button>
@@ -1371,7 +1386,7 @@ const EmailApp = ({ view, setView }) => {
           onDelete={deleteBlock}
           onDuplicate={duplicateBlock}
         />
-        <div onClick={e=>e.stopPropagation()}>
+        <div onClick={e=>e.stopPropagation()} style={{minHeight:0,height:'100%',overflow:'hidden'}}>
           <Inspector
             draft={draft}
             selectedId={selectedId}
