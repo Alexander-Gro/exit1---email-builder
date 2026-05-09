@@ -130,7 +130,7 @@ const generateInlineHtml = (draft) => {
     `<a href="${xe(href)}" style="display:inline-block;background:${bg};color:${color};padding:10px 22px;border-radius:9999px;font-size:13px;font-weight:600;text-decoration:none;font-family:${FONT};">${xe(text)} &rarr;</a>`;
 
   const outlineBtn = (href, text) =>
-    `<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${xe(href)}" style="height:36px;v-text-anchor:middle;width:200px;" arcsize="50%" strokecolor="#444448" fillcolor="#111113"><w:anchorlock/><center style="color:#e0e0e8;font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:bold;">${xe(text)} &rarr;</center></v:roundrect><![endif]--><!--[if !mso]><!--><a href="${xe(href)}" style="display:inline-block;background:#111113;color:#e0e0e8;padding:9px 18px;border-radius:9999px;border:1px solid #444448;font-size:13px;font-weight:500;text-decoration:none;font-family:${FONT};">${xe(text)} &rarr;</a><!--<![endif]-->`;
+    `<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${xe(href)}" style="height:36px;v-text-anchor:middle;width:200px;" arcsize="50%" strokecolor="${BORD}" fillcolor="${CARD}"><w:anchorlock/><center style="color:#e0e0e8;font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:bold;">${xe(text)} &rarr;</center></v:roundrect><![endif]--><!--[if !mso]><!--><a href="${xe(href)}" style="display:inline-block;background:${CARD};color:#e0e0e8;padding:9px 18px;border-radius:9999px;border:1px solid ${BORD};font-size:13px;font-weight:500;text-decoration:none;font-family:${FONT};">${xe(text)} &rarr;</a><!--<![endif]-->`;
 
   const dotColor = t => t==='down'?'#E24530':t==='warn'?'#E3B24A':'#3FB873';
 
@@ -148,8 +148,8 @@ const generateInlineHtml = (draft) => {
           <img src="${xe(logoUrl)}" alt="${xe(d.brandName||'exit1.dev')}" width="130" height="28" style="display:block;width:130px;height:28px;border:0;" />
         </td>
         ${d.showStatus ? `<td style="vertical-align:middle;text-align:right;">
-          <span style="display:inline-block;padding:5px 13px;border-radius:9999px;border:1px solid #333338;background:#1a1a1e;font-size:12px;font-weight:500;color:#909098;font-family:${FONT};white-space:nowrap;">
-            <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${dotColor(d.statusType)};vertical-align:middle;margin-right:6px;"></span>${xe(d.statusText)}
+          <span style="display:inline-block;padding:5px 13px;border-radius:9999px;border:1px solid ${BORD};background:${CARD};font-size:12px;font-weight:500;color:${T2};font-family:${FONT};white-space:nowrap;">
+            <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${dotColor(d.statusType)};vertical-align:middle;margin-right:6px;font-size:0;line-height:0;">&nbsp;</span>${xe(d.statusText)}
           </span>
         </td>` : ''}
       </tr>
@@ -342,7 +342,7 @@ const generateInlineHtml = (draft) => {
       <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px;">
         <tr>
           <td width="14" style="vertical-align:middle;padding-right:8px;">
-            <div style="width:8px;height:8px;border-radius:50%;background:${c.dot};"></div>
+            <table cellpadding="0" cellspacing="0" border="0"><tr><td width="8" height="8" bgcolor="${c.dot}" style="background:${c.dot};border-radius:50%;width:8px;height:8px;font-size:0;line-height:0;">&nbsp;</td></tr></table>
           </td>
           <td style="vertical-align:middle;font-size:10px;font-weight:700;color:${c.dot};letter-spacing:2px;text-transform:uppercase;font-family:${FONT};">${xe(c.label)}</td>
         </tr>
@@ -369,7 +369,7 @@ const generateInlineHtml = (draft) => {
       <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
         <tr>
           <td width="22" style="vertical-align:top;padding-right:10px;padding-top:1px;">
-            <div style="width:18px;height:18px;border-radius:50%;background:${it.checked?accent:'#222226'};border:${it.checked?'none':'1px solid #444448'};text-align:center;font-size:10px;font-weight:700;color:${it.checked?contrast:'transparent'};line-height:18px;font-family:${FONT};">${it.checked?'&#10003;':''}</div>
+            <table cellpadding="0" cellspacing="0" border="0"><tr><td width="18" height="18" align="center" valign="middle" bgcolor="${it.checked?accent:'#222226'}" style="background:${it.checked?accent:'#222226'};border:${it.checked?'none':'1px solid #444448'};border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:700;color:${it.checked?contrast:'#606068'};line-height:18px;font-family:${FONT};">${it.checked?'&#10003;':'&nbsp;'}</td></tr></table>
           </td>
           <td style="vertical-align:top;font-size:14px;color:${it.checked?'#d8d8e0':'#606068'};line-height:1.45;font-family:${FONT};${it.checked?'':'text-decoration:line-through;'}">${xe(it.text)}</td>
         </tr>
@@ -444,7 +444,7 @@ const generateInlineHtml = (draft) => {
       case 'announcement': {
         const bc = ({accent:accent,green:'#3FB873',amber:'#E3B24A',red:'#E24530'})[d.badgeStyle]||accent;
         let h = '<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="'+BG+'" style="background:'+BG+';border-bottom:1px solid '+BORD+';"><tr><td align="center" style="padding:40px '+P+' 32px;">';
-        if (d.badge) h += '<p style="margin:0 0 16px;padding:0;"><span style="display:inline-block;padding:4px 14px;border-radius:9999px;border:1px solid '+bc+';font-size:11px;font-weight:700;color:'+bc+';letter-spacing:2px;text-transform:uppercase;font-family:'+FONT+';">'+xe(d.badge)+'</span></p>';
+        if (d.badge) h += '<p style="margin:0 0 16px;padding:0;"><span style="display:inline-block;padding:4px 14px;border-radius:9999px;border:1px solid '+bc+';background:'+bc+'22;font-size:11px;font-weight:700;color:'+bc+';letter-spacing:2px;text-transform:uppercase;font-family:'+FONT+';">'+xe(d.badge)+'</span></p>';
         h += '<h1 style="margin:0 0 14px;padding:0;color:'+T1+';font-size:32px;line-height:1.15;font-weight:700;letter-spacing:-0.025em;font-family:'+FONT+';">'+xe(d.heading)+'</h1>';
         if (d.sub) h += '<p style="margin:0 auto 20px;padding:0;max-width:480px;color:'+T2+';font-size:17px;line-height:1.55;font-family:'+FONT+';">'+xe(d.sub)+'</p>';
         if (d.ctaText) h += vmlBtn(d.ctaUrl||'#', d.ctaText, accent, contrast, 200);
@@ -498,7 +498,7 @@ const generateInlineHtml = (draft) => {
         if (d.avatarUrl) {
           s += '<td width="60" valign="middle" style="padding-right:14px;"><img src="'+xe(d.avatarUrl)+'" alt="'+xe(d.name||'')+'" width="48" height="48" style="display:block;width:48px;height:48px;border-radius:50%;object-fit:cover;border:1px solid '+BORD+';" /></td>';
         } else {
-          s += '<td width="60" valign="middle" style="padding-right:14px;"><div style="width:48px;height:48px;border-radius:50%;background:'+CARD+';border:1px solid '+BORD+';display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:'+T3+';font-family:'+FONT+';">'+xe((d.name||'?')[0])+'</div></td>';
+          s += '<td width="60" valign="middle" style="padding-right:14px;"><table cellpadding="0" cellspacing="0" border="0"><tr><td width="48" height="48" align="center" valign="middle" bgcolor="'+CARD+'" style="background:'+CARD+';border:1px solid '+BORD+';border-radius:50%;width:48px;height:48px;font-size:18px;font-weight:700;color:'+T3+';font-family:'+FONT+';">'+xe((d.name||'?')[0])+'</td></tr></table></td>';
         }
         s += '<td valign="middle"><p style="margin:0 0 2px;padding:0;color:'+T1+';font-size:15px;font-weight:700;font-family:'+FONT+';">'+xe(d.name)+'</p><p style="margin:0;padding:0;color:'+T3+';font-size:13px;font-family:'+FONT+';">'+xe(d.title)+'</p></td></tr></table>';
         if (d.ps) s += '<p style="margin:20px 0 0;padding:16px 0 0;color:'+T3+';font-size:13px;line-height:1.6;border-top:1px solid '+BORD+';font-family:'+FONT+';">'+xe('P.S. '+d.ps)+'</p>';
