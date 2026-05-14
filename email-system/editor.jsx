@@ -648,50 +648,48 @@ const Canvas = ({ draft, selectedId, onSelect, onReorder, onDelete, onDuplicate 
 
   return (
     <div className="eb-canvas" onDragOver={e => e.preventDefault()} onDrop={onDrop} onClick={() => onSelect(null)}>
-      <div className="eb-canvas-scroll">
-        {/* Canvas label strip */}
-        <div style={{ width: '100%', maxWidth: 600, display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10, padding: '0 4px' }}>
-          <span style={{ fontSize: 'var(--e1-fs-xs)', color: 'var(--e1-text-3)', fontWeight: 500 }}>{draft.meta.name || 'Untitled'}</span>
-          <span style={{ fontSize: 'var(--e1-fs-xs)', color: 'var(--e1-text-3)' }}>
-            {draft.blocks.length} block{draft.blocks.length !== 1 ? 's' : ''} · 600px
-          </span>
-        </div>
+      {/* Canvas label strip */}
+      <div style={{ width: '100%', maxWidth: 600, display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10, padding: '0 4px' }}>
+        <span style={{ fontSize: 'var(--e1-fs-xs)', color: 'var(--e1-text-3)', fontWeight: 500 }}>{draft.meta.name || 'Untitled'}</span>
+        <span style={{ fontSize: 'var(--e1-fs-xs)', color: 'var(--e1-text-3)' }}>
+          {draft.blocks.length} block{draft.blocks.length !== 1 ? 's' : ''} · 600px
+        </span>
+      </div>
 
-        {/* Email shell */}
-        <div
-          className="e1-shell"
-          style={{ '--e1-email-bg': surfaceBg, '--e1-accent': accent, '--e1-accent-fg': getContrast(draft.meta) }}
-        >
-          {draft.blocks.length === 0 && (
-            <div className="eb-canvas-empty" style={{ padding: '60px 40px', textAlign: 'center' }}>
-              <div className="eb-canvas-empty-icon">✉</div>
-              <p>Drag a block from the left to start.<br />Draft saves automatically.</p>
-            </div>
-          )}
+      {/* Email shell */}
+      <div
+        className="e1-shell"
+        style={{ '--e1-email-bg': surfaceBg, '--e1-accent': accent, '--e1-accent-fg': getContrast(draft.meta) }}
+      >
+        {draft.blocks.length === 0 && (
+          <div className="eb-canvas-empty" style={{ padding: '60px 40px', textAlign: 'center' }}>
+            <div className="eb-canvas-empty-icon">✉</div>
+            <p>Drag a block from the left to start.<br />Draft saves automatically.</p>
+          </div>
+        )}
 
-          {draft.blocks.map((b, idx) => (
-            <React.Fragment key={b.id}>
-              {dropIdx === idx && <div style={{ height: 3, background: 'var(--e1-primary)', borderRadius: 2, margin: '2px 0' }} />}
-              <div
-                className={`eb-block-wrap${selectedId === b.id ? ' eb-block-selected' : ''}`}
-                onClick={e => { e.stopPropagation(); onSelect(b.id); }}
-                draggable
-                onDragStart={e => onDragStart(e, b.id)}
-                onDragOver={e => onDragOver(e, idx)}
-                onDragEnd={() => { setDragId(null); setDropIdx(null); }}
-              >
-                {/* Block action bar */}
-                <div className="eb-block-actions" onClick={e => e.stopPropagation()}>
-                  <button className="eb-btn eb-btn-icon" draggable onDragStart={e => onDragStart(e, b.id)} title="Drag to reorder" style={{ cursor: 'grab' }}>≡</button>
-                  <button className="eb-btn eb-btn-icon" onClick={() => onDuplicate(b.id)} title="Duplicate">⧉</button>
-                  <button className="eb-btn eb-btn-icon eb-btn-danger" onClick={() => onDelete(b.id)} title="Delete">×</button>
-                </div>
-                {BLOCKS[b.type]?.render(b.data)}
+        {draft.blocks.map((b, idx) => (
+          <React.Fragment key={b.id}>
+            {dropIdx === idx && <div style={{ height: 3, background: 'var(--e1-primary)', borderRadius: 2, margin: '2px 0' }} />}
+            <div
+              className={`eb-block-wrap${selectedId === b.id ? ' eb-block-selected' : ''}`}
+              onClick={e => { e.stopPropagation(); onSelect(b.id); }}
+              draggable
+              onDragStart={e => onDragStart(e, b.id)}
+              onDragOver={e => onDragOver(e, idx)}
+              onDragEnd={() => { setDragId(null); setDropIdx(null); }}
+            >
+              {/* Block action bar */}
+              <div className="eb-block-actions" onClick={e => e.stopPropagation()}>
+                <button className="eb-btn eb-btn-icon" draggable onDragStart={e => onDragStart(e, b.id)} title="Drag to reorder" style={{ cursor: 'grab' }}>≡</button>
+                <button className="eb-btn eb-btn-icon" onClick={() => onDuplicate(b.id)} title="Duplicate">⧉</button>
+                <button className="eb-btn eb-btn-icon eb-btn-danger" onClick={() => onDelete(b.id)} title="Delete">×</button>
               </div>
-            </React.Fragment>
-          ))}
-          {dropIdx === draft.blocks.length && <div style={{ height: 3, background: 'var(--e1-primary)', borderRadius: 2, margin: '2px 0' }} />}
-        </div>
+              {BLOCKS[b.type]?.render(b.data)}
+            </div>
+          </React.Fragment>
+        ))}
+        {dropIdx === draft.blocks.length && <div style={{ height: 3, background: 'var(--e1-primary)', borderRadius: 2, margin: '2px 0' }} />}
       </div>
     </div>
   );
