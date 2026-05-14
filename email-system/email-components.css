@@ -91,13 +91,13 @@
 }
 
 .e1-h1 {
-  font-family: var(--e1-serif);
+  font-family: var(--e1-font);
   font-size: 36px;
-  font-weight: 400;
+  font-weight: 700;
   line-height: 1.15;
   color: var(--e1-text-1);
   margin-bottom: 14px;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 
 .e1-subtitle {
