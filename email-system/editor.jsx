@@ -649,7 +649,7 @@ const Canvas = ({ draft, selectedId, onSelect, onReorder, onDelete, onDuplicate 
   return (
     <div className="eb-canvas" onDragOver={e => e.preventDefault()} onDrop={onDrop} onClick={() => onSelect(null)}>
       {/* Canvas label strip */}
-      <div style={{ width: '100%', maxWidth: 600, display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10, padding: '0 4px' }}>
+      <div style={{ width: '100%', maxWidth: 600, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10, padding: '0 4px' }}>
         <span style={{ fontSize: 'var(--e1-fs-xs)', color: 'var(--e1-text-3)', fontWeight: 500 }}>{draft.meta.name || 'Untitled'}</span>
         <span style={{ fontSize: 'var(--e1-fs-xs)', color: 'var(--e1-text-3)' }}>
           {draft.blocks.length} block{draft.blocks.length !== 1 ? 's' : ''} · 600px

@@ -6,6 +6,7 @@
 .e1-shell {
   width: 100%;
   max-width: 600px;
+  margin: 0 auto;
   background: var(--e1-email-bg, #15151B);
   border: 1px solid var(--e1-border);
   border-radius: var(--e1-radius-md);
