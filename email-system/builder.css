@@ -171,16 +171,21 @@ html, body, #app {
 /* ── Canvas (center) ─────────────────────────────────────────────────── */
 .eb-canvas {
   background: var(--e1-canvas);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.eb-canvas-scroll {
+  flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  height: calc(100vh - 48px);
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 32px 24px;
   scrollbar-width: thin;
   scrollbar-color: var(--e1-border) transparent;
-  position: relative;
 }
 
 .eb-canvas-empty {
