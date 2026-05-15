@@ -908,7 +908,9 @@ const BLOCKS = {
           <div className="e1-todolist">
             {items.map((it, i) => (
               <div key={i} className={`e1-todo-item${it.done ? ' done' : ''}`}>
-                <div className="e1-todo-box">{it.done ? '✓' : ''}</div>
+                <div className="e1-todo-box">{it.done ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                ) : ''}</div>
                 <div className="e1-todo-text">
                   <span className="e1-todo-label">{it.text}</span>
                   {it.note && <span className="e1-todo-note">{it.note}</span>}
