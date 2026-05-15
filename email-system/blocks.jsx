@@ -516,7 +516,7 @@ const BLOCKS = {
     render: d => (
       <div className="e1-block e1-announcement">
         {d.badge && <div className="e1-badge">{d.badge}</div>}
-        <h1 className="e1-h1" style={{ textAlign: 'center', fontSize: 28 }}>{d.heading}</h1>
+        <h1 className="e1-h1" style={{ textAlign: 'center', fontSize: 32, letterSpacing: '-0.025em' }}>{d.heading}</h1>
         {d.sub && <p style={{ fontSize: 16, color: 'var(--e1-text-2)', lineHeight: 1.55, maxWidth: 460, margin: '0 auto 20px', textAlign: 'center' }}>{d.sub}</p>}
         {d.ctaText && <a href={d.ctaUrl || '#'} className="e1-cta e1-cta-primary">{d.ctaText} →</a>}
       </div>

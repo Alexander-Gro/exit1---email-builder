@@ -152,7 +152,7 @@ const generateInlineHtml = draft => {
         </td>
         ${d.showStatus ? `<td style="vertical-align:middle;text-align:right;">
           <table cellpadding="0" cellspacing="0" border="0" align="right"><tr>
-            <td style="padding:5px 10px;border:1px solid ${BORD};background:${CARD};font-size:12px;font-weight:500;color:${T2};font-family:${FONT};white-space:nowrap;vertical-align:middle;">
+            <td style="padding:4px 10px;border-radius:99px;background:${dotColor(d.statusType)}1F;font-size:12px;font-weight:500;color:${dotColor(d.statusType)};font-family:${FONT};white-space:nowrap;vertical-align:middle;">
               <span style="color:${dotColor(d.statusType)};font-size:9px;margin-right:5px;vertical-align:middle;">&#9679;</span>${xe(d.statusText)}
             </td>
           </tr></table>
@@ -189,13 +189,13 @@ const generateInlineHtml = draft => {
     ${card(`
       <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
         <tr>
-          <td style="vertical-align:middle;padding-right:8px;">
-            <span style="display:inline-block;background:${accent};color:${contrast};padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;font-family:${FONT};">${xe(s.number)}</span>
+          <td width="34" style="vertical-align:middle;padding-right:10px;">
+            <table cellpadding="0" cellspacing="0" border="0"><tr><td width="26" height="26" align="center" bgcolor="${accent}" style="background:${accent};border-radius:50%;width:26px;height:26px;font-size:12px;font-weight:700;color:${contrast};font-family:${FONT};line-height:26px;text-align:center;">${xe(s.number)}</td></tr></table>
           </td>
           <td style="vertical-align:middle;font-size:11px;font-weight:600;color:${T3};letter-spacing:0.08em;text-transform:uppercase;font-family:${FONT};">${xe(s.label)}</td>
         </tr>
       </table>
-      <h3 style="margin:0 0 8px;padding:0;color:${T1};font-size:17px;font-weight:700;font-family:${FONT};">${xe(s.title)}</h3>
+      <h3 style="margin:0 0 8px;padding:0;color:${T1};font-size:16px;font-weight:500;letter-spacing:-0.01em;font-family:${FONT};">${xe(s.title)}</h3>
       <p style="margin:0 0 ${s.ctaText ? '16' : '0'}px;padding:0;color:${T2};font-size:14px;line-height:1.6;font-family:${FONT};">${xe(s.body)}</p>
       ${s.ctaText ? (s.ctaStyle === 'primary' ? vmlBtn(s.ctaUrl || '#', s.ctaText, accent, contrast) : ghostBtn(s.ctaUrl || '#', s.ctaText)) : ''}
     `)}
@@ -222,7 +222,7 @@ const generateInlineHtml = draft => {
             <tr><td style="padding:16px;text-align:center;">
           <!--<![endif]-->
               <p style="margin:0 0 4px;padding:0;font-size:10px;font-weight:600;color:${T3};letter-spacing:0.08em;text-transform:uppercase;font-family:${FONT};">${xe(s.label)}</p>
-              <p style="margin:0;padding:0;font-size:26px;font-weight:700;color:${T1};letter-spacing:-0.02em;font-family:${FONT};">${xe(s.value)}</p>
+              <p style="margin:0;padding:0;font-size:28px;font-weight:700;color:${T1};letter-spacing:-0.02em;font-family:${FONT};">${xe(s.value)}</p>
               ${s.sub ? `<p style="margin:4px 0 0;padding:0;font-size:11px;color:${T3};font-family:${FONT};">${xe(s.sub)}</p>` : ''}
           <!--[if mso]></td></tr></table><![endif]-->
           <!--[if !mso]><!--></td></tr></table><!--<![endif]-->
@@ -293,7 +293,7 @@ const generateInlineHtml = draft => {
       <table width="100%" cellpadding="0" cellspacing="0" border="0" style="${idx < its.length - 1 ? `border-bottom:1px solid ${BORD};` : ''}">
         <tr>
           <td width="30" style="vertical-align:top;padding:10px 12px 10px 0;">
-            <table cellpadding="0" cellspacing="0" border="0"><tr><td width="18" height="18" align="center" bgcolor="${it.done ? accent : 'transparent'}" style="background:${it.done ? accent : 'transparent'};border:${it.done ? 'none' : `1.5px solid ${BORD}`};border-radius:4px;font-size:10px;font-weight:700;color:${it.done ? (d.checkColor || '#000000') : 'transparent'};font-family:${FONT};line-height:18px;text-align:center;width:18px;height:18px;">${it.done ? '&#10003;' : '&nbsp;'}</td></tr></table>
+            <table cellpadding="0" cellspacing="0" border="0"><tr><td width="18" height="18" align="center" bgcolor="${it.done ? accent : CARD}" style="background:${it.done ? accent : CARD};border:${it.done ? 'none' : `1.5px solid ${BORD}`};border-radius:4px;font-size:11px;font-weight:700;color:${it.done ? (d.checkColor || '#000000') : CARD};font-family:${FONT};line-height:18px;text-align:center;width:18px;height:18px;">${it.done ? '&#10003;' : '&nbsp;'}</td></tr></table>
           </td>
           <td style="vertical-align:top;padding:10px 0;">
             <div style="font-size:14px;font-weight:500;color:${it.done ? T3 : T1};font-family:${FONT};line-height:1.4;${it.done ? 'text-decoration:line-through;' : ''}">${xe(it.text)}</div>
@@ -371,7 +371,7 @@ const generateInlineHtml = draft => {
         ? `<img src="${xe(d.imgUrl)}" alt="${xe(d.imgAlt || '')}" width="520" style="display:block;width:100%;height:auto;max-width:520px;border:0;margin-bottom:16px;border-radius:4px;" />`
         : `<p style="margin:0 0 16px;padding:48px 0;text-align:center;font-size:11px;color:${T3};font-family:${MONO};letter-spacing:0.08em;text-transform:uppercase;border-bottom:1px solid ${BORD};">${xe(d.mediaLabel)}</p>`
       }
-      <h3 style="margin:0 0 8px;padding:0;color:${T1};font-size:17px;font-weight:700;font-family:${FONT};">${xe(d.heading)}</h3>
+      <h3 style="margin:0 0 8px;padding:0;color:${T1};font-size:16px;font-weight:500;letter-spacing:-0.01em;font-family:${FONT};">${xe(d.heading)}</h3>
       <p style="margin:0 0 ${d.ctaText ? '16' : '0'}px;padding:0;color:${T2};font-size:14px;line-height:1.6;font-family:${FONT};">${xe(d.body)}</p>
       ${d.ctaText ? (d.ctaStyle === 'primary' ? vmlBtn(d.ctaUrl || '#', d.ctaText, accent, contrast) : ghostBtn(d.ctaUrl || '#', d.ctaText)) : ''}
     `)}
@@ -411,7 +411,7 @@ const generateInlineHtml = draft => {
             <td style="text-align:right;"><span style="display:inline-block;background:${accent};color:${contrast};padding:3px 10px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;font-family:${FONT};">${xe(d.tier)}</span></td>
           </tr>
         </table>
-        ${(d.specs || []).map(s => `<p style="margin:0 0 7px;padding:0;font-size:13px;color:${T2};font-family:${FONT};"><span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:${accent};vertical-align:middle;margin-right:8px;"></span>${xe(s)}</p>`).join('')}
+        ${(d.specs || []).map(s => `<p style="margin:0 0 7px;padding:0;font-size:13px;color:${T2};font-family:${FONT};"><span style="color:#3EB87A;font-weight:600;margin-right:8px;font-size:12px;">&#10003;</span>${xe(s)}</p>`).join('')}
         ${d.upsell ? `<p style="margin:12px 0 0;padding:0;color:${T3};font-size:13px;line-height:1.55;font-family:${FONT};">${xe(d.upsell).replace(/\*\*(.+?)\*\*/g, `<b style="color:${accent};font-weight:700;">$1</b>`)}</p>` : ''}
       </td></tr>
     </table>

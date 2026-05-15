@@ -351,11 +351,11 @@
   height: 18px;
   border-radius: 4px;
   border: 1.5px solid var(--e1-border);
-  background: transparent;
+  background: var(--e1-card, #1C1C23);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: transparent;
+  color: var(--e1-card, #1C1C23);
   margin-top: 1px;
   transition: all var(--e1-transition);
 }
@@ -363,7 +363,7 @@
 .e1-todo-item.done .e1-todo-box {
   background: var(--e1-accent);
   border-color: var(--e1-accent);
-  color: var(--e1-on-accent, #fff);
+  color: var(--e1-accent);
 }
 
 .e1-todo-text {
@@ -427,7 +427,7 @@
   font-family: var(--e1-mono);
   font-size: 12px;
   line-height: 1.65;
-  color: var(--e1-text-2);
+  color: #A8C4D8;
   white-space: pre;
   overflow-x: auto;
 }
@@ -695,7 +695,7 @@
 .e1-link-label {
   font-size: 14px;
   font-weight: 500;
-  color: var(--e1-primary);
+  color: var(--e1-accent);
 }
 
 .e1-link-desc {
