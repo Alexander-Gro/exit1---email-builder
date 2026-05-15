@@ -138,7 +138,7 @@ const generateInlineHtml = draft => {
     const wrap = (inner, pad = `20px ${P}`) =>
       `\n<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">\n  <tr><td style="padding:${pad};">${inner}</td></tr>\n</table>`;
     const card = (inner, extraStyle = '') =>
-      `<!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="${CARD}" style="background:${CARD};border:1px solid ${BORD};padding:20px;${extraStyle}"><![endif]--><!--[if !mso]><!--><table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${CARD}" style="background:${CARD};border:1px solid ${BORD};border-radius:8px;${extraStyle}"><tr><td style="padding:20px;">${inner}</td></tr></table><!--<![endif]--><!--[if mso]></td></tr></table><![endif]-->`;
+      `<!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="${CARD}" style="background:${CARD};padding:20px;${extraStyle}"><![endif]--><!--[if !mso]><!--><table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${CARD}" style="background:${CARD};border-radius:8px;${extraStyle}"><tr><td style="padding:20px;">${inner}</td></tr></table><!--<![endif]--><!--[if mso]></td></tr></table><![endif]-->`;
 
     switch (b.type) {
 
