@@ -143,7 +143,7 @@ const generateInlineHtml = draft => {
     switch (b.type) {
 
       case 'header': return `
-<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};border-bottom:1px solid ${BORD};">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
   <tr><td style="padding:18px ${P};">
     <table width="100%" cellpadding="0" cellspacing="0" border="0">
       <tr>
@@ -163,7 +163,7 @@ const generateInlineHtml = draft => {
 </table>`;
 
       case 'hero': return `
-<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};border-bottom:1px solid ${BORD};">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
   <tr><td style="padding:40px ${P} 32px;">
     ${d.eyebrow ? `<p style="margin:0 0 12px;padding:0;font-size:11px;font-weight:700;color:${accent};letter-spacing:0.1em;text-transform:uppercase;font-family:${FONT};">${xe(d.eyebrow)}</p>` : ''}
     <h1 style="margin:0 0 14px;padding:0;color:${T1};font-size:36px;line-height:1.15;font-weight:700;letter-spacing:-0.02em;font-family:${FONT};">${xe(d.heading)}</h1>
@@ -428,7 +428,7 @@ const generateInlineHtml = draft => {
 </table>`;
 
       case 'footer': return `
-<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};border-top:1px solid ${BORD};">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
   <tr><td style="padding:18px ${P} 24px;">
     <table width="100%" cellpadding="0" cellspacing="0" border="0">
       <tr>
@@ -442,7 +442,7 @@ const generateInlineHtml = draft => {
 </table>`;
 
       case 'announcement': return `
-<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};border-bottom:1px solid ${BORD};">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
   <tr><td align="center" style="padding:40px ${P} 32px;">
     ${d.badge ? `<p style="margin:0 0 16px;"><span style="display:inline-block;padding:4px 12px;border-radius:4px;background:${accent};color:${contrast};font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;font-family:${FONT};">${xe(d.badge)}</span></p>` : ''}
     <h1 style="margin:0 0 14px;padding:0;color:${T1};font-size:32px;line-height:1.15;font-weight:700;letter-spacing:-0.025em;font-family:${FONT};">${xe(d.heading)}</h1>
@@ -477,7 +477,7 @@ const generateInlineHtml = draft => {
       }
 
       case 'bigmetric': return `
-<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};border-bottom:1px solid ${BORD};">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
   <tr><td align="center" style="padding:40px ${P};">
     <p style="margin:0 0 8px;padding:0;font-size:64px;font-weight:700;color:${d.accent ? accent : T1};letter-spacing:-0.04em;line-height:1;font-family:${FONT};">${xe(d.value)}</p>
     <p style="margin:0 0 6px;padding:0;font-size:16px;font-weight:600;color:${T1};font-family:${FONT};">${xe(d.label)}</p>
@@ -505,7 +505,7 @@ const generateInlineHtml = draft => {
 </table>`;
 
       case 'signature': return `
-<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};border-top:1px solid ${BORD};">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
   <tr><td style="padding:28px ${P} 24px;">
     ${d.signoff ? `<p style="margin:0 0 20px;padding:0;color:${T2};font-size:15px;line-height:1.6;font-family:${FONT};">${xe(d.signoff)}</p>` : ''}
     <table cellpadding="0" cellspacing="0" border="0">
@@ -581,7 +581,7 @@ const generateInlineHtml = draft => {
       }
 
       case 'event': return `
-<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};border-bottom:1px solid ${BORD};">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
   <tr><td style="padding:32px ${P} 28px;">
     ${(d.tag || d.date || d.time) ? `
     <p style="margin:0 0 16px;padding:0;">
@@ -597,7 +597,7 @@ const generateInlineHtml = draft => {
       case 'sociallinks': {
         const links = d.links || [];
         return `
-<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};border-top:1px solid ${BORD};">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
   <tr><td style="padding:18px ${P} 22px;">
     ${d.label ? `<p style="margin:0 0 12px;padding:0;font-size:11px;font-weight:600;color:${T3};letter-spacing:0.08em;text-transform:uppercase;font-family:${FONT};">${xe(d.label)}</p>` : ''}
     ${links.map((l, i) => `<a href="${xe(l.url || '#')}" style="display:inline-block;margin:0 8px 8px 0;padding:6px 12px;border-radius:99px;border:1px solid ${BORD};background:${CARD};text-decoration:none;white-space:nowrap;"><span style="font-size:11px;font-weight:600;color:${accent};font-family:${FONT};">${xe(l.platform)}</span>&nbsp;<span style="font-size:11px;color:${T3};font-family:${FONT};">${xe(l.handle)}</span></a>`).join('\n    ')}
