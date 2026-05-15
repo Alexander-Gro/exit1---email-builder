@@ -293,7 +293,7 @@ const generateInlineHtml = draft => {
       <table width="100%" cellpadding="0" cellspacing="0" border="0" style="${idx < its.length - 1 ? `border-bottom:1px solid ${BORD};` : ''}">
         <tr>
           <td width="30" style="vertical-align:top;padding:10px 12px 10px 0;">
-            <table cellpadding="0" cellspacing="0" border="0"><tr><td width="18" height="18" align="center" bgcolor="${it.done ? accent : 'transparent'}" style="background:${it.done ? accent : 'transparent'};border:${it.done ? 'none' : `1.5px solid ${BORD}`};border-radius:4px;font-size:10px;font-weight:700;color:${it.done ? contrast : 'transparent'};font-family:${FONT};line-height:18px;text-align:center;width:18px;height:18px;">${it.done ? '&#10003;' : '&nbsp;'}</td></tr></table>
+            <table cellpadding="0" cellspacing="0" border="0"><tr><td width="18" height="18" align="center" bgcolor="${it.done ? accent : 'transparent'}" style="background:${it.done ? accent : 'transparent'};border:${it.done ? 'none' : `1.5px solid ${BORD}`};border-radius:4px;font-size:10px;font-weight:700;color:${it.done ? (d.checkColor || '#000000') : 'transparent'};font-family:${FONT};line-height:18px;text-align:center;width:18px;height:18px;">${it.done ? '&#10003;' : '&nbsp;'}</td></tr></table>
           </td>
           <td style="vertical-align:top;padding:10px 0;">
             <div style="font-size:14px;font-weight:500;color:${it.done ? T3 : T1};font-family:${FONT};line-height:1.4;${it.done ? 'text-decoration:line-through;' : ''}">${xe(it.text)}</div>

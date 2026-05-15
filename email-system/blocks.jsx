@@ -882,7 +882,7 @@ const BLOCKS = {
   /* ── To-do checklist ── */
   todolist: {
     type: 'todolist', label: 'To-do list', icon: '☐',
-    defaults: () => ({ heading: 'Onboarding checklist', showProgress: true, items: [
+    defaults: () => ({ heading: 'Onboarding checklist', showProgress: true, checkColor: '#000000', items: [
       { text: 'Add your first monitor',        note: 'Paste any URL — site, API, or cron job.', done: true  },
       { text: 'Connect an alert channel',      note: 'Slack, email, Discord, or SMS.',           done: true  },
       { text: 'Invite your team',              note: 'Add teammates so alerts reach everyone.',   done: false },
@@ -909,7 +909,7 @@ const BLOCKS = {
             {items.map((it, i) => (
               <div key={i} className={`e1-todo-item${it.done ? ' done' : ''}`}>
                 <div className="e1-todo-box">{it.done ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={d.checkColor || '#000000'} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
                 ) : ''}</div>
                 <div className="e1-todo-text">
                   <span className="e1-todo-label">{it.text}</span>
@@ -927,6 +927,12 @@ const BLOCKS = {
       return <>
         <Field label="Heading"><TI value={d.heading} onChange={v => up({ heading: v })} /></Field>
         <Chk value={d.showProgress} onChange={v => up({ showProgress: v })} label="Show progress bar" />
+        <Field label="Check colour">
+          <div className="eb-color-row">
+            <div className="eb-color-swatch"><input type="color" value={d.checkColor || '#000000'} onChange={e => up({ checkColor: e.target.value })} /></div>
+            <span style={{ fontSize: 'var(--e1-fs-xs)', color: 'var(--e1-text-3)' }}>{d.checkColor || '#000000'}</span>
+          </div>
+        </Field>
         {items.map((it, i) => (
           <Group key={i} title={`Task ${i + 1}`} onRemove={() => up({ items: items.filter((_, x) => x !== i) })}>
             <Field label="Task"><TI value={it.text} onChange={v => set(i, { text: v })} /></Field>
