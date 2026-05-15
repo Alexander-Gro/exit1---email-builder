@@ -267,19 +267,33 @@ html, body, #app {
 
 .eb-block-actions {
   position: absolute;
-  right: -40px;
-  top: 4px;
+  right: 8px;
+  top: 8px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 4px;
   opacity: 0;
   transition: opacity var(--e1-transition);
+  z-index: 10;
 }
 
 .eb-block-selected {
   outline: 1px solid var(--e1-primary);
   outline-offset: 1px;
   border-radius: var(--e1-radius-md);
+}
+
+.eb-global-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--e1-fs-xs);
+  color: var(--e1-text-3);
+  background: var(--e1-muted);
+  border: 1px solid var(--e1-border);
+  border-radius: var(--e1-radius-sm);
+  padding: 4px 8px;
+  margin-bottom: 14px;
 }
 
 /* ── Form primitives ─────────────────────────────────────────────────── */

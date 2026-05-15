@@ -89,6 +89,11 @@ const loadDraft = () => {
 };
 const saveDraft = d => { try { localStorage.setItem(SK, JSON.stringify(d)); } catch {} };
 
+const GK = 'exit1-global-v1';
+const GLOBAL_BLOCK_TYPES = new Set(['signature', 'footer', 'sociallinks']);
+const loadGlobal = () => { try { return JSON.parse(localStorage.getItem(GK) || '{}'); } catch { return {}; } };
+const saveGlobal = (type, data) => { try { const g = loadGlobal(); localStorage.setItem(GK, JSON.stringify({ ...g, [type]: data })); } catch {} };
+
 /* ═══════════════════════════════════════════════════════
    INLINE HTML EXPORT
    Pure inline CSS — no <style> blocks, no CSS variables.
@@ -886,6 +891,9 @@ const Inspector = ({ draft, selectedId, updateBlock, updateMeta }) => {
         <span style={{ fontSize: 'var(--e1-fs-xs)', color: 'var(--e1-text-3)' }}>Block editor</span>
       </div>
       <div className="eb-inspector-body">
+        {GLOBAL_BLOCK_TYPES.has(block.type) && (
+          <div className="eb-global-badge">⟳ Saved globally — persists across emails</div>
+        )}
         {def.inspector(block.data, patch => updateBlock(block.id, { ...block.data, ...patch }))}
       </div>
     </div>
@@ -984,11 +992,16 @@ const EmailApp = () => {
   const showToast = msg => { setToast(msg); setTimeout(() => setToast(null), 2000); };
 
   const updateMeta  = patch => setDraft(d => ({ ...d, meta: { ...d.meta, ...patch } }));
-  const updateBlock = (id, newData) => setDraft(d => ({ ...d, blocks: d.blocks.map(b => b.id === id ? { ...b, data: newData } : b) }));
+  const updateBlock = (id, newData) => setDraft(d => {
+    const block = d.blocks.find(b => b.id === id);
+    if (block && GLOBAL_BLOCK_TYPES.has(block.type)) saveGlobal(block.type, newData);
+    return { ...d, blocks: d.blocks.map(b => b.id === id ? { ...b, data: newData } : b) };
+  });
 
   const addBlock = (type, atIdx) => {
     if (!BLOCKS[type]) return;
-    const nb = { id: uid(), type, data: BLOCKS[type].defaults() };
+    const globalData = GLOBAL_BLOCK_TYPES.has(type) ? loadGlobal()[type] : null;
+    const nb = { id: uid(), type, data: globalData ?? BLOCKS[type].defaults() };
     setDraft(d => {
       const idx = typeof atIdx === 'number' ? atIdx : d.blocks.length;
       return { ...d, blocks: [...d.blocks.slice(0, idx), nb, ...d.blocks.slice(idx)] };
