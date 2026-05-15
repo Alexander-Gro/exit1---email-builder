@@ -879,10 +879,68 @@ const BLOCKS = {
     },
   },
 
+  /* ── To-do checklist ── */
+  todolist: {
+    type: 'todolist', label: 'To-do list', icon: '☐',
+    defaults: () => ({ heading: 'Onboarding checklist', showProgress: true, items: [
+      { text: 'Add your first monitor',        note: 'Paste any URL — site, API, or cron job.', done: true  },
+      { text: 'Connect an alert channel',      note: 'Slack, email, Discord, or SMS.',           done: true  },
+      { text: 'Invite your team',              note: 'Add teammates so alerts reach everyone.',   done: false },
+      { text: 'Create a public status page',   note: 'Show customers you\'re on top of things.',  done: false },
+    ]}),
+    render: d => {
+      const items  = d.items || [];
+      const doneN  = items.filter(it => it.done).length;
+      const pct    = items.length ? Math.round((doneN / items.length) * 100) : 0;
+      return (
+        <div className="e1-block">
+          {d.heading && (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+              <h3 className="e1-h3" style={{ margin: 0 }}>{d.heading}</h3>
+              {d.showProgress && <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--e1-text-3)' }}>{doneN}/{items.length}</span>}
+            </div>
+          )}
+          {d.showProgress && (
+            <div style={{ height: 4, background: 'var(--e1-border)', borderRadius: 99, marginBottom: 16, overflow: 'hidden' }}>
+              <div style={{ height: '100%', width: `${pct}%`, background: 'var(--e1-accent)', borderRadius: 99, transition: 'width 0.3s' }} />
+            </div>
+          )}
+          <div className="e1-todolist">
+            {items.map((it, i) => (
+              <div key={i} className={`e1-todo-item${it.done ? ' done' : ''}`}>
+                <div className="e1-todo-box">{it.done ? '✓' : ''}</div>
+                <div className="e1-todo-text">
+                  <span className="e1-todo-label">{it.text}</span>
+                  {it.note && <span className="e1-todo-note">{it.note}</span>}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    },
+    inspector: (d, up) => {
+      const items = d.items || [];
+      const set = (i, patch) => up({ items: items.map((it, x) => x === i ? { ...it, ...patch } : it) });
+      return <>
+        <Field label="Heading"><TI value={d.heading} onChange={v => up({ heading: v })} /></Field>
+        <Chk value={d.showProgress} onChange={v => up({ showProgress: v })} label="Show progress bar" />
+        {items.map((it, i) => (
+          <Group key={i} title={`Task ${i + 1}`} onRemove={() => up({ items: items.filter((_, x) => x !== i) })}>
+            <Field label="Task"><TI value={it.text} onChange={v => set(i, { text: v })} /></Field>
+            <Field label="Note (optional)"><TI value={it.note || ''} onChange={v => set(i, { note: v })} placeholder="Supporting detail" /></Field>
+            <Chk value={it.done} onChange={v => set(i, { done: v })} label="Done" />
+          </Group>
+        ))}
+        <AddBtn onClick={() => up({ items: [...items, { text: 'New task', note: '', done: false }] })}>+ Add task</AddBtn>
+      </>;
+    },
+  },
+
 };
 
 const BLOCK_ORDER = [
-  'header', 'announcement', 'hero', 'body', 'alert', 'steps', 'checklist',
+  'header', 'announcement', 'hero', 'body', 'alert', 'steps', 'checklist', 'todolist',
   'ctablock', 'twocol', 'stats', 'bigmetric', 'code', 'image', 'feature',
   'timeline', 'quote', 'testimonial', 'linklist', 'changelog', 'event',
   'plan', 'sociallinks', 'signature', 'divider', 'footer',

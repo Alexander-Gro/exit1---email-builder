@@ -327,6 +327,73 @@
 .e1-checklist li.checked   { color: var(--e1-text-1); }
 .e1-checklist li.unchecked { color: var(--e1-text-3); text-decoration: line-through; }
 
+/* ── To-do list ──────────────────────────────────────────────────────── */
+.e1-todolist {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.e1-todo-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--e1-border);
+}
+
+.e1-todo-item:last-child {
+  border-bottom: none;
+}
+
+.e1-todo-box {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1.5px solid var(--e1-border);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: transparent;
+  margin-top: 1px;
+  transition: all var(--e1-transition);
+}
+
+.e1-todo-item.done .e1-todo-box {
+  background: var(--e1-accent);
+  border-color: var(--e1-accent);
+  color: var(--e1-on-accent, #fff);
+}
+
+.e1-todo-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.e1-todo-label {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--e1-text-1);
+  font-weight: 500;
+}
+
+.e1-todo-item.done .e1-todo-label {
+  color: var(--e1-text-3);
+  text-decoration: line-through;
+}
+
+.e1-todo-note {
+  font-size: 12px;
+  color: var(--e1-text-3);
+  line-height: 1.4;
+}
+
 /* ── Code block ──────────────────────────────────────────────────────── */
 .e1-code-wrap {
   background: var(--e1-popover, #111117);

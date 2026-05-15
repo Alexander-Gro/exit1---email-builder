@@ -278,6 +278,34 @@ const generateInlineHtml = draft => {
   </td></tr>
 </table>`;
 
+      case 'todolist': {
+        const its = d.items || [];
+        const doneN = its.filter(it => it.done).length;
+        const pct = its.length ? Math.round((doneN / its.length) * 100) : 0;
+        const barFilled = Math.round(pct / 100 * 200);
+        return `
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
+  <tr><td style="padding:0 ${P} 16px;">
+    ${card(`
+      ${d.heading ? `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:${d.showProgress ? '12px' : '14px'};"><tr><td style="font-size:16px;font-weight:700;color:${T1};font-family:${FONT};">${xe(d.heading)}</td>${d.showProgress ? `<td align="right" style="font-size:11px;font-weight:600;color:${T3};font-family:${FONT};">${doneN}/${its.length}</td>` : ''}</tr></table>` : ''}
+      ${d.showProgress ? `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;"><tr><td width="${barFilled}" height="4" bgcolor="${accent}" style="background:${accent};border-radius:99px;height:4px;font-size:0;line-height:0;">&nbsp;</td><td height="4" bgcolor="${BORD}" style="background:${BORD};border-radius:99px;height:4px;font-size:0;line-height:0;">&nbsp;</td></tr></table>` : ''}
+      ${its.map((it, idx) => `
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="${idx < its.length - 1 ? `border-bottom:1px solid ${BORD};` : ''}">
+        <tr>
+          <td width="30" style="vertical-align:top;padding:10px 12px 10px 0;">
+            <table cellpadding="0" cellspacing="0" border="0"><tr><td width="18" height="18" align="center" bgcolor="${it.done ? accent : 'transparent'}" style="background:${it.done ? accent : 'transparent'};border:${it.done ? 'none' : `1.5px solid ${BORD}`};border-radius:4px;font-size:10px;font-weight:700;color:${it.done ? contrast : 'transparent'};font-family:${FONT};line-height:18px;text-align:center;width:18px;height:18px;">${it.done ? '&#10003;' : '&nbsp;'}</td></tr></table>
+          </td>
+          <td style="vertical-align:top;padding:10px 0;">
+            <div style="font-size:14px;font-weight:500;color:${it.done ? T3 : T1};font-family:${FONT};line-height:1.4;${it.done ? 'text-decoration:line-through;' : ''}">${xe(it.text)}</div>
+            ${it.note ? `<div style="font-size:12px;color:${T3};font-family:${FONT};line-height:1.4;margin-top:2px;">${xe(it.note)}</div>` : ''}
+          </td>
+        </tr>
+      </table>`).join('')}
+    `)}
+  </td></tr>
+</table>`;
+      }
+
       case 'code': return `
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
   <tr><td style="padding:0 ${P} 16px;">
