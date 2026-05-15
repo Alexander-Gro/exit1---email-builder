@@ -19,7 +19,6 @@
 /* ── Block spacing ───────────────────────────────────────────────────── */
 .e1-block {
   padding: 20px 32px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .e1-block:last-child {
