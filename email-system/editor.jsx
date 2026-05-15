@@ -173,7 +173,7 @@ const generateInlineHtml = draft => {
 
       case 'body': return `
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
-  <tr><td style="padding:24px ${P} 8px;">
+  <tr><td style="padding:20px ${P};">
     ${(d.paragraphs || []).map(p => {
       const c  = p.style === 'lede' ? T1 : T2;
       const fw = p.style === 'lede' ? '500' : '400';
@@ -185,7 +185,7 @@ const generateInlineHtml = draft => {
 
       case 'steps': return (d.items || []).map((s, i) => `
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
-  <tr><td style="padding:${i === 0 ? '8' : '4'}px ${P} 0;">
+  <tr><td style="padding:${i === 0 ? '20' : '8'}px ${P} ${i === (d.items||[]).length - 1 ? '20' : '0'}px;">
     ${card(`
       <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
         <tr>
@@ -204,14 +204,14 @@ const generateInlineHtml = draft => {
 
       case 'ctablock': return `
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
-  <tr><td align="center" style="padding:12px ${P} 28px;">
+  <tr><td align="center" style="padding:20px ${P};">
     ${d.style === 'ghost' ? ghostBtn(d.url || '#', d.text) : vmlBtn(d.url || '#', d.text, accent, contrast, 200)}
   </td></tr>
 </table>`;
 
       case 'stats': return `
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
-  <tr><td style="padding:8px ${P} 16px;">
+  <tr><td style="padding:20px ${P};">
     <table width="100%" cellpadding="0" cellspacing="0" border="0">
       <tr>
         ${(d.items || []).map((s, si) => `
@@ -242,7 +242,7 @@ const generateInlineHtml = draft => {
         const c = AC[d.type] || AC.down;
         return `
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
-  <tr><td style="padding:0 ${P} 16px;">
+  <tr><td style="padding:20px ${P};">
     <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${c.bg};border:1px solid ${c.border};border-left:3px solid ${c.dot};border-radius:8px;">
       <tr><td style="padding:16px 18px;">
         <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px;">
@@ -262,7 +262,7 @@ const generateInlineHtml = draft => {
 
       case 'checklist': return `
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
-  <tr><td style="padding:0 ${P} 16px;">
+  <tr><td style="padding:20px ${P};">
     ${card(`
       ${d.heading ? `<h3 style="margin:0 0 14px;padding:0;color:${T1};font-size:16px;font-weight:700;font-family:${FONT};">${xe(d.heading)}</h3>` : ''}
       ${(d.items || []).map(it => `
@@ -285,7 +285,7 @@ const generateInlineHtml = draft => {
         const barFilled = Math.round(pct / 100 * 200);
         return `
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
-  <tr><td style="padding:0 ${P} 16px;">
+  <tr><td style="padding:20px ${P};">
     ${card(`
       ${d.heading ? `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:${d.showProgress ? '12px' : '14px'};"><tr><td style="font-size:16px;font-weight:700;color:${T1};font-family:${FONT};">${xe(d.heading)}</td>${d.showProgress ? `<td align="right" style="font-size:11px;font-weight:600;color:${T3};font-family:${FONT};">${doneN}/${its.length}</td>` : ''}</tr></table>` : ''}
       ${d.showProgress ? `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;"><tr><td width="${barFilled}" height="4" bgcolor="${accent}" style="background:${accent};border-radius:99px;height:4px;font-size:0;line-height:0;">&nbsp;</td><td height="4" bgcolor="${BORD}" style="background:${BORD};border-radius:99px;height:4px;font-size:0;line-height:0;">&nbsp;</td></tr></table>` : ''}
@@ -308,7 +308,7 @@ const generateInlineHtml = draft => {
 
       case 'code': return `
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
-  <tr><td style="padding:0 ${P} 16px;">
+  <tr><td style="padding:20px ${P};">
     <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#0E0E14" style="background:#0E0E14;border:1px solid ${BORD};border-radius:8px;overflow:hidden;">
       <tr><td>
         <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${MUTED}" style="background:${MUTED};border-bottom:1px solid ${BORD};">
@@ -327,7 +327,7 @@ const generateInlineHtml = draft => {
 
       case 'image': return `
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
-  <tr><td style="padding:0 ${P} 16px;">
+  <tr><td style="padding:20px ${P};">
     ${d.link ? `<a href="${xe(d.link)}" style="display:block;text-decoration:none;">` : ''}
     ${d.src
       ? `<img src="${xe(d.src)}" alt="${xe(d.alt || '')}" width="536" style="display:block;width:100%;height:auto;max-width:536px;border-radius:8px;border:0;" />`
@@ -340,7 +340,7 @@ const generateInlineHtml = draft => {
 
       case 'twocol': return `
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
-  <tr><td style="padding:0 ${P} 16px;">
+  <tr><td style="padding:20px ${P};">
     <table width="100%" cellpadding="0" cellspacing="0" border="0">
       <tr>
         ${(d.cols || []).map((col, i) => {
@@ -365,7 +365,7 @@ const generateInlineHtml = draft => {
 
       case 'feature': return `
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
-  <tr><td style="padding:0 ${P} 16px;">
+  <tr><td style="padding:20px ${P};">
     ${card(`
       ${d.imgUrl
         ? `<img src="${xe(d.imgUrl)}" alt="${xe(d.imgAlt || '')}" width="520" style="display:block;width:100%;height:auto;max-width:520px;border:0;margin-bottom:16px;border-radius:4px;" />`
@@ -380,7 +380,7 @@ const generateInlineHtml = draft => {
 
       case 'quote': return `
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
-  <tr><td style="padding:0 ${P} 16px;">
+  <tr><td style="padding:20px ${P};">
     <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${CARD}" style="background:${CARD};border:1px solid ${BORD};border-left:3px solid ${accent};border-radius:8px;">
       <tr><td style="padding:22px;">
         <p style="margin:0 0 14px;padding:0;color:${T1};font-size:17px;font-weight:500;line-height:1.5;font-family:${FONT};">&#8220;${xe(d.quote)}&#8221;</p>
@@ -402,7 +402,7 @@ const generateInlineHtml = draft => {
 
       case 'plan': return `
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
-  <tr><td style="padding:8px ${P} 28px;">
+  <tr><td style="padding:20px ${P};">
     <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${CARD}" style="background:${CARD};border:1px solid ${BORD};border-top:2px solid ${accent};border-radius:8px;">
       <tr><td style="padding:20px;">
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:14px;">
@@ -456,7 +456,7 @@ const generateInlineHtml = draft => {
         const evs = d.events || [];
         return `
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
-  <tr><td style="padding:0 ${P} 16px;">
+  <tr><td style="padding:20px ${P};">
     ${card(`
       ${d.heading ? `<h3 style="margin:0 0 16px;padding:0;color:${T1};font-size:16px;font-weight:700;font-family:${FONT};">${xe(d.heading)}</h3>` : ''}
       ${evs.map((ev, i) => `
@@ -487,7 +487,7 @@ const generateInlineHtml = draft => {
 
       case 'linklist': return `
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
-  <tr><td style="padding:0 ${P} 16px;">
+  <tr><td style="padding:20px ${P};">
     ${card(`
       ${d.heading ? `<h3 style="margin:0 0 14px;padding:0;color:${T1};font-size:15px;font-weight:700;font-family:${FONT};">${xe(d.heading)}</h3>` : ''}
       ${(d.links || []).map((l, i) => `
@@ -530,7 +530,7 @@ const generateInlineHtml = draft => {
         const stars = Math.min(5, d.stars || 0);
         return `
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
-  <tr><td style="padding:0 ${P} 16px;">
+  <tr><td style="padding:20px ${P};">
     ${card(`
       ${stars > 0 ? `<p style="margin:0 0 12px;padding:0;font-size:14px;letter-spacing:2px;color:${accent};font-family:${FONT};">${'&#9733;'.repeat(stars)}</p>` : ''}
       <p style="margin:0 0 16px;padding:0;color:${T1};font-size:15px;font-weight:500;line-height:1.5;font-family:${FONT};">"${xe(d.quote)}"</p>
@@ -558,7 +558,7 @@ const generateInlineHtml = draft => {
         const items = d.items || [];
         return `
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
-  <tr><td style="padding:0 ${P} 16px;">
+  <tr><td style="padding:20px ${P};">
     <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${CARD}" style="background:${CARD};border:1px solid ${BORD};border-radius:8px;overflow:hidden;">
       <tr><td style="padding:12px 18px;border-bottom:1px solid ${BORD};">
         <span style="display:inline-block;padding:3px 9px;border-radius:4px;background:${accent};color:${contrast};font-size:11px;font-weight:700;letter-spacing:0.05em;font-family:${FONT};">${xe(d.version)}</span>
