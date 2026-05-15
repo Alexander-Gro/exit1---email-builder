@@ -123,13 +123,13 @@ const generateInlineHtml = draft => {
 
   /* Outlook-safe rounded button */
   const vmlBtn = (href, text, bg, fg, w = 200) =>
-    `<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${xe(href)}" style="height:38px;v-text-anchor:middle;width:${w}px;" arcsize="14%" strokecolor="${bg}" fillcolor="${bg}"><w:anchorlock/><center style="color:${fg};font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:bold;">${xe(text)}</center></v:roundrect><![endif]--><!--[if !mso]><!-->${solidBtn(href, text, bg, fg)}<!--<![endif]-->`;
+    `<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${xe(href)}" style="height:38px;v-text-anchor:middle;width:${w}px;" arcsize="14%" strokecolor="${bg}" fillcolor="${bg}"><w:anchorlock/><center style="color:${fg};font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:bold;">${xe(text)} &#8594;</center></v:roundrect><![endif]--><!--[if !mso]><!-->${solidBtn(href, text, bg, fg)}<!--<![endif]-->`;
 
   const solidBtn = (href, text, bg, fg) =>
-    `<a href="${xe(href)}" style="display:inline-block;background:${bg};color:${fg};padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;font-family:${FONT};">${xe(text)}</a>`;
+    `<a href="${xe(href)}" style="display:inline-block;background:${bg};color:${fg};padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;font-family:${FONT};">${xe(text)} &#8594;</a>`;
 
   const ghostBtn = (href, text) =>
-    `<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${xe(href)}" style="height:36px;v-text-anchor:middle;width:200px;" arcsize="14%" strokecolor="${BORD}" fillcolor="${MUTED}"><w:anchorlock/><center style="color:${T1};font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:bold;">${xe(text)}</center></v:roundrect><![endif]--><!--[if !mso]><!--><a href="${xe(href)}" style="display:inline-block;background:${MUTED};color:${T1};padding:9px 18px;border-radius:6px;border:1px solid ${BORD};font-size:13px;font-weight:500;text-decoration:none;font-family:${FONT};">${xe(text)}</a><!--<![endif]-->`;
+    `<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${xe(href)}" style="height:36px;v-text-anchor:middle;width:200px;" arcsize="14%" strokecolor="${BORD}" fillcolor="${MUTED}"><w:anchorlock/><center style="color:${T1};font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:bold;">${xe(text)} &#8594;</center></v:roundrect><![endif]--><!--[if !mso]><!--><a href="${xe(href)}" style="display:inline-block;background:${MUTED};color:${T1};padding:9px 18px;border-radius:6px;border:1px solid ${BORD};font-size:13px;font-weight:500;text-decoration:none;font-family:${FONT};">${xe(text)} &#8594;</a><!--<![endif]-->`;
 
   const dotColor = t => t === 'down' ? '#E5534B' : t === 'warn' ? '#F59E0B' : '#3EB87A';
 
