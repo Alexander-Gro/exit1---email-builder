@@ -859,7 +859,7 @@ const BLOCKS = {
   /* ── Footer ── */
   footer: {
     type: 'footer', label: 'Footer', icon: 'F',
-    defaults: () => ({ brand: 'exit1.dev', links: [
+    defaults: () => ({ brand: 'exit1.dev', address: '123 Main St, San Francisco, CA 94105', links: [
       { text: 'Dashboard',   url: '{{dashboard_url}}' },
       { text: 'Preferences', url: '{{preferences_url}}' },
       { text: 'Unsubscribe', url: '{{unsubscribe_url}}' },
@@ -867,6 +867,7 @@ const BLOCKS = {
     render: d => (
       <footer className="e1-footer">
         <div className="e1-footer-brand">{d.brand} · Uptime monitoring for teams that ship.</div>
+        {d.address && <div className="e1-footer-address">{d.address}</div>}
         <div className="e1-footer-links">
           {(d.links || []).map((l, i) => (
             <a key={i} href={l.url || '#'} className="e1-footer-link">{l.text}</a>
@@ -880,6 +881,7 @@ const BLOCKS = {
       const setLink = (i, patch) => up({ links: links.map((l, x) => x === i ? { ...l, ...patch } : l) });
       return <>
         <Field label="Brand"><TI value={d.brand} onChange={v => up({ brand: v })} /></Field>
+        <Field label="Address"><TI value={d.address} onChange={v => up({ address: v })} placeholder="123 Main St, City, State ZIP" /></Field>
         {links.map((l, i) => (
           <Group key={i} title={`Link ${i + 1}`} onRemove={() => up({ links: links.filter((_, x) => x !== i) })}>
             <Field label="Text"><TI value={l.text} onChange={v => setLink(i, { text: v })} /></Field>

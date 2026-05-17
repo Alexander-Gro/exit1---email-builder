@@ -432,7 +432,7 @@ const generateInlineHtml = draft => {
   <tr><td style="padding:18px ${P} 24px;">
     <table width="100%" cellpadding="0" cellspacing="0" border="0">
       <tr>
-        <td style="font-size:12px;color:${T3};font-family:${FONT};">${xe(d.brand)} &middot; Uptime monitoring for teams that ship.</td>
+        <td style="font-size:12px;color:${T3};font-family:${FONT};">${xe(d.brand)} &middot; Uptime monitoring for teams that ship.${d.address ? `<br /><span style="font-size:10px;color:${T3};opacity:0.7;">${xe(d.address)}</span>` : ''}</td>
         <td style="text-align:right;white-space:nowrap;">
           ${(d.links || []).map(l => `<a href="${xe(l.url || '#')}" style="font-size:11px;color:${T3};text-decoration:underline;margin-left:16px;font-family:${FONT};">${xe(l.text)}</a>`).join('')}
         </td>
