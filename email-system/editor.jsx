@@ -135,7 +135,7 @@ const generateInlineHtml = draft => {
     `<a href="${xe(href)}" style="display:inline-flex;align-items:center;gap:8px;background:#5865f2;color:#ffffff;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;font-family:${FONT};"><img src="https://storage.exit1.dev/images/Discord-Symbol-White.png" width="16" height="16" style="display:inline-block;vertical-align:middle;object-fit:contain;" alt="" />${xe(text)}</a>`;
 
   const g2Btn = (href, text) =>
-    `<a href="${xe(href)}" style="display:inline-flex;align-items:center;gap:8px;background:#FF492C;color:#ffffff;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;font-family:${FONT};"><img src="https://storage.exit1.dev/images/G2Logo-Red.png" width="16" height="16" style="display:inline-block;vertical-align:middle;object-fit:contain;" alt="" />${xe(text)}</a>`;
+    `<a href="${xe(href)}" style="display:inline-flex;align-items:center;gap:8px;background:#FF492C;color:#ffffff;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;font-family:${FONT};"><img src="https://storage.exit1.dev/images/G2-icon.jpg" width="16" height="16" style="display:inline-block;vertical-align:middle;object-fit:contain;" alt="" />${xe(text)}</a>`;
 
   const dotColor = t => t === 'down' ? '#E5534B' : t === 'warn' ? '#F59E0B' : '#3EB87A';
 

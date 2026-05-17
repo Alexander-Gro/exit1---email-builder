@@ -55,7 +55,7 @@ const BUTTON_STYLES = [
     value: 'g2',
     label: 'G2',
     preview: <a style={{display:'inline-flex',alignItems:'center',gap:5,background:'#FF492C',color:'#fff',padding:'4px 10px',borderRadius:4,fontSize:11,fontWeight:600,textDecoration:'none'}}>
-      <img src="https://storage.exit1.dev/images/G2Logo-Red.png" style={{width:11,height:11,display:'block',objectFit:'contain'}} alt="" />
+      <img src="https://storage.exit1.dev/images/G2-icon.jpg" style={{width:11,height:11,display:'block',objectFit:'contain'}} alt="" />
       Button
     </a>
   },
@@ -292,7 +292,7 @@ const BLOCKS = {
         <div className="e1-block e1-ctablock">
           <a href={d.url || '#'} className={`e1-cta ${cls}`}>
             {d.style === 'discord' && <img src="https://storage.exit1.dev/images/Discord-Symbol-White.png" className="e1-cta-icon" alt="" />}
-            {d.style === 'g2' && <img src="https://storage.exit1.dev/images/G2Logo-Red.png" className="e1-cta-icon" alt="" />}
+            {d.style === 'g2' && <img src="https://storage.exit1.dev/images/G2-icon.jpg" className="e1-cta-icon" alt="" />}
             {d.text}{d.style !== 'discord' && d.style !== 'g2' ? ' →' : ''}
           </a>
         </div>
