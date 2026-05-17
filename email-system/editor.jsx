@@ -134,6 +134,9 @@ const generateInlineHtml = draft => {
   const discordBtn = (href, text) =>
     `<a href="${xe(href)}" style="display:inline-flex;align-items:center;gap:8px;background:#5865f2;color:#ffffff;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;font-family:${FONT};"><img src="https://storage.exit1.dev/images/Discord-Symbol-White.png" width="16" height="16" style="display:inline-block;vertical-align:middle;object-fit:contain;" alt="" />${xe(text)}</a>`;
 
+  const g2Btn = (href, text) =>
+    `<a href="${xe(href)}" style="display:inline-flex;align-items:center;gap:8px;background:#FF492C;color:#ffffff;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;font-family:${FONT};"><img src="https://storage.exit1.dev/images/G2Logo-Red.png" width="16" height="16" style="display:inline-block;vertical-align:middle;object-fit:contain;" alt="" />${xe(text)}</a>`;
+
   const dotColor = t => t === 'down' ? '#E5534B' : t === 'warn' ? '#F59E0B' : '#3EB87A';
 
   const blockHtml = b => {
@@ -225,7 +228,7 @@ const generateInlineHtml = draft => {
       case 'ctablock': return `
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
   <tr><td align="center" style="padding:20px ${P};">
-    ${d.style === 'ghost' ? ghostBtn(d.url || '#', d.text) : d.style === 'discord' ? discordBtn(d.url || '#', d.text) : vmlBtn(d.url || '#', d.text, accent, contrast, 200)}
+    ${d.style === 'ghost' ? ghostBtn(d.url || '#', d.text) : d.style === 'discord' ? discordBtn(d.url || '#', d.text) : d.style === 'g2' ? g2Btn(d.url || '#', d.text) : vmlBtn(d.url || '#', d.text, accent, contrast, 200)}
   </td></tr>
 </table>`;
 

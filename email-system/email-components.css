@@ -191,7 +191,15 @@
   gap: 8px;
 }
 
-.e1-cta-discord-icon {
+.e1-cta-g2 {
+  background: #FF492C;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.e1-cta-icon {
   width: 16px;
   height: 16px;
   display: block;

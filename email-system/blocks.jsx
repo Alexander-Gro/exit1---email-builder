@@ -51,6 +51,14 @@ const BUTTON_STYLES = [
       Button
     </a>
   },
+  {
+    value: 'g2',
+    label: 'G2',
+    preview: <a style={{display:'inline-flex',alignItems:'center',gap:5,background:'#FF492C',color:'#fff',padding:'4px 10px',borderRadius:4,fontSize:11,fontWeight:600,textDecoration:'none'}}>
+      <img src="https://storage.exit1.dev/images/G2Logo-Red.png" style={{width:11,height:11,display:'block',objectFit:'contain'}} alt="" />
+      Button
+    </a>
+  },
 ];
 
 const StylePicker = ({ value, onChange }) => {
@@ -279,12 +287,13 @@ const BLOCKS = {
     type: 'ctablock', label: 'Button', icon: '▸',
     defaults: () => ({ text: 'Get started', url: '{{dashboard_url}}', style: 'primary' }),
     render: d => {
-      const cls = d.style === 'ghost' ? 'e1-cta-ghost' : d.style === 'discord' ? 'e1-cta-discord' : 'e1-cta-primary';
+      const cls = d.style === 'ghost' ? 'e1-cta-ghost' : d.style === 'discord' ? 'e1-cta-discord' : d.style === 'g2' ? 'e1-cta-g2' : 'e1-cta-primary';
       return (
         <div className="e1-block e1-ctablock">
           <a href={d.url || '#'} className={`e1-cta ${cls}`}>
-            {d.style === 'discord' && <img src="https://storage.exit1.dev/images/Discord-Symbol-White.png" className="e1-cta-discord-icon" alt="" />}
-            {d.text}{d.style !== 'discord' ? ' →' : ''}
+            {d.style === 'discord' && <img src="https://storage.exit1.dev/images/Discord-Symbol-White.png" className="e1-cta-icon" alt="" />}
+            {d.style === 'g2' && <img src="https://storage.exit1.dev/images/G2Logo-Red.png" className="e1-cta-icon" alt="" />}
+            {d.text}{d.style !== 'discord' && d.style !== 'g2' ? ' →' : ''}
           </a>
         </div>
       );
