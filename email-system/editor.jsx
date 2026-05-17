@@ -227,7 +227,7 @@ const generateInlineHtml = draft => {
 
       case 'ctablock': return `
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
-  <tr><td align="center" style="padding:20px ${P};">
+  <tr><td align="${d.align || 'center'}" style="padding:20px ${P};">
     ${d.style === 'ghost' ? ghostBtn(d.url || '#', d.text) : d.style === 'discord' ? discordBtn(d.url || '#', d.text) : d.style === 'g2' ? g2Btn(d.url || '#', d.text) : vmlBtn(d.url || '#', d.text, accent, contrast, 200)}
   </td></tr>
 </table>`;

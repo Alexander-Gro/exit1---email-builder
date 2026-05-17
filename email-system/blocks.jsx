@@ -285,11 +285,11 @@ const BLOCKS = {
   /* ── Button / CTA ── */
   ctablock: {
     type: 'ctablock', label: 'Button', icon: '▸',
-    defaults: () => ({ text: 'Get started', url: '{{dashboard_url}}', style: 'primary' }),
+    defaults: () => ({ text: 'Get started', url: '{{dashboard_url}}', style: 'primary', align: 'center' }),
     render: d => {
       const cls = d.style === 'ghost' ? 'e1-cta-ghost' : d.style === 'discord' ? 'e1-cta-discord' : d.style === 'g2' ? 'e1-cta-g2' : 'e1-cta-primary';
       return (
-        <div className="e1-block e1-ctablock">
+        <div className="e1-block e1-ctablock" style={{ textAlign: d.align || 'center' }}>
           <a href={d.url || '#'} className={`e1-cta ${cls}`}>
             {d.style === 'discord' && <img src="https://storage.exit1.dev/images/Discord-Symbol-White.png" className="e1-cta-icon" alt="" />}
             {d.style === 'g2' && <img src="https://storage.exit1.dev/images/G2-icon.jpg" className="e1-cta-icon" alt="" />}
@@ -304,6 +304,10 @@ const BLOCKS = {
         <Field label="URL"><UI value={d.url} onChange={v => up({ url: v })} /></Field>
         <Field label="Style">
           <StylePicker value={d.style || 'primary'} onChange={v => up({ style: v })} />
+        </Field>
+        <Field label="Alignment">
+          <Seg value={d.align || 'center'} onChange={v => up({ align: v })}
+            options={[{ value: 'left', label: 'Left' }, { value: 'center', label: 'Center' }]} />
         </Field>
       </>
     ),
