@@ -89,7 +89,7 @@ const loadDraft = () => {
 };
 const saveDraft = d => { try { localStorage.setItem(SK, JSON.stringify(d)); } catch {} };
 
-const GK = 'exit1-global-v1';
+const GK = 'exit1-global-v2';
 const GLOBAL_BLOCK_TYPES = new Set(['signature', 'footer', 'sociallinks']);
 const loadGlobal = () => { try { return JSON.parse(localStorage.getItem(GK) || '{}'); } catch { return {}; } };
 const saveGlobal = (type, data) => { try { const g = loadGlobal(); localStorage.setItem(GK, JSON.stringify({ ...g, [type]: data })); } catch {} };
@@ -596,10 +596,18 @@ const generateInlineHtml = draft => {
 
       case 'sociallinks': {
         const links = d.links || [];
+        const SOCIAL_ICONS = {
+          facebook:  'https://storage.exit1.dev/images/facebook-icon.png',
+          github:    'https://storage.exit1.dev/images/github-icon.png',
+          instagram: 'https://storage.exit1.dev/images/instagram-icon.png',
+          x:         'https://storage.exit1.dev/images/x-icon.png',
+          twitter:   'https://storage.exit1.dev/images/x-icon.png',
+        };
+        const resolveIcon = l => l.icon || SOCIAL_ICONS[(l.platform || '').toLowerCase()] || '';
         return `
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
   <tr><td style="padding:18px ${P} 22px;">
-    ${links.map(l => `<a href="${xe(l.url || '#')}" style="display:inline-block;margin:0 8px 8px 0;text-decoration:none;"><img src="${xe(l.icon || '')}" alt="${xe(l.platform || '')}" width="32" height="32" style="display:block;border:0;" /></a>`).join('\n    ')}
+    ${links.map(l => `<a href="${xe(l.url || '#')}" style="display:inline-block;margin:0 8px 8px 0;text-decoration:none;"><img src="${xe(resolveIcon(l))}" alt="${xe(l.platform || '')}" width="32" height="32" style="display:block;border:0;filter:invert(1);" /></a>`).join('\n    ')}
   </td></tr>
 </table>`;
       }

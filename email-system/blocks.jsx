@@ -807,17 +807,28 @@ const BLOCKS = {
       { platform: 'Instagram', icon: 'https://storage.exit1.dev/images/instagram-icon.png', url: '#' },
       { platform: 'X',         icon: 'https://storage.exit1.dev/images/x-icon.png',         url: '#' },
     ]}),
-    render: d => (
-      <div className="e1-block">
-        <div className="e1-social-links">
-          {(d.links || []).map((l, i) => (
-            <a key={i} href={l.url || '#'} className="e1-social-link">
-              <img src={l.icon} alt={l.platform} width="24" height="24" style={{ display: 'block' }} />
-            </a>
-          ))}
+    render: d => {
+      const SOCIAL_ICONS = {
+        facebook:  'https://storage.exit1.dev/images/facebook-icon.png',
+        github:    'https://storage.exit1.dev/images/github-icon.png',
+        instagram: 'https://storage.exit1.dev/images/instagram-icon.png',
+        x:         'https://storage.exit1.dev/images/x-icon.png',
+        twitter:   'https://storage.exit1.dev/images/x-icon.png',
+        linkedin:  'https://storage.exit1.dev/images/x-icon.png',
+      };
+      const resolveIcon = l => l.icon || SOCIAL_ICONS[(l.platform || '').toLowerCase()] || '';
+      return (
+        <div className="e1-block">
+          <div className="e1-social-links">
+            {(d.links || []).map((l, i) => (
+              <a key={i} href={l.url || '#'} className="e1-social-link">
+                <img src={resolveIcon(l)} alt={l.platform} width="24" height="24" style={{ display: 'block', filter: 'invert(1)' }} />
+              </a>
+            ))}
+          </div>
         </div>
-      </div>
-    ),
+      );
+    },
     inspector: (d, up) => {
       const links = d.links || [];
       const set = (i, patch) => { const a = [...links]; a[i] = { ...a[i], ...patch }; up({ links: a }); };
