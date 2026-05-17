@@ -165,7 +165,7 @@ const BLOCKS = {
     render: d => (
       <div className="e1-block e1-body">
         {(d.paragraphs || []).map((p, i) => (
-          <p key={i} className={p.style === 'lede' ? 'lede' : p.style === 'close' ? 'close' : ''}>{p.text}</p>
+          <p key={i} className={p.style === 'lede' ? 'lede' : p.style === 'close' ? 'close' : ''} style={p.align === 'center' ? { textAlign: 'center' } : undefined}>{p.text}</p>
         ))}
       </div>
     ),
@@ -179,6 +179,10 @@ const BLOCKS = {
             <Field label="Style">
               <Seg value={p.style || 'normal'} onChange={v => set(i, { style: v })}
                 options={[{ value: 'normal', label: 'Normal' }, { value: 'lede', label: 'Lede' }, { value: 'close', label: 'Close' }]} />
+            </Field>
+            <Field label="Align">
+              <Seg value={p.align || 'left'} onChange={v => set(i, { align: v })}
+                options={[{ value: 'left', label: 'Left' }, { value: 'center', label: 'Center' }]} />
             </Field>
           </Group>
         ))}

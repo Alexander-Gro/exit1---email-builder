@@ -178,10 +178,11 @@ const generateInlineHtml = draft => {
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
   <tr><td style="padding:20px ${P};">
     ${(d.paragraphs || []).map(p => {
-      const c  = p.style === 'lede' ? T1 : T2;
+      const c  = p.style === 'lede' ? T1 : p.style === 'close' ? T3 : T2;
       const fw = p.style === 'lede' ? '500' : '400';
-      const fs = p.style === 'lede' ? '16px' : '15px';
-      return `<p style="margin:0 0 16px;padding:0;color:${c};font-size:${fs};font-weight:${fw};line-height:1.65;font-family:${FONT};">${xe(p.text)}</p>`;
+      const fs = p.style === 'lede' ? '16px' : p.style === 'close' ? '14px' : '15px';
+      const ta = p.align === 'center' ? 'center' : 'left';
+      return `<p style="margin:0 0 16px;padding:0;color:${c};font-size:${fs};font-weight:${fw};line-height:1.65;text-align:${ta};font-family:${FONT};">${xe(p.text)}</p>`;
     }).join('')}
   </td></tr>
 </table>`;
