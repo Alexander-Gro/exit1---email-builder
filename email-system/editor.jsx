@@ -602,6 +602,7 @@ const generateInlineHtml = draft => {
           instagram: 'https://storage.exit1.dev/images/instagram-icon.png',
           x:         'https://storage.exit1.dev/images/x-icon.png',
           twitter:   'https://storage.exit1.dev/images/x-icon.png',
+          linkedin:  'https://storage.exit1.dev/images/linkedin-icon.png',
         };
         const resolveIcon = l => l.icon || SOCIAL_ICONS[(l.platform || '').toLowerCase()] || '';
         return `
