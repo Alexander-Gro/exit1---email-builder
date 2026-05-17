@@ -187,6 +187,22 @@ const generateInlineHtml = draft => {
   </td></tr>
 </table>`;
 
+      case 'simplelist': {
+        const tag = d.listType === 'ordered' ? 'ol' : 'ul';
+        const listStyle = d.listType === 'ordered' ? 'decimal' : 'disc';
+        const items = (d.items || []).map(item =>
+          `<li style="margin:0 0 8px;padding:0;color:${T2};font-size:15px;font-weight:400;line-height:1.65;font-family:${FONT};">${xe(item)}</li>`
+        ).join('');
+        return `
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
+  <tr><td style="padding:20px ${P};">
+    <${tag} style="margin:0;padding:0 0 0 24px;list-style-type:${listStyle};">
+      ${items}
+    </${tag}>
+  </td></tr>
+</table>`;
+      }
+
       case 'steps': return (d.items || []).map((s, i) => `
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
   <tr><td style="padding:${i === 0 ? '20' : '8'}px ${P} ${i === (d.items||[]).length - 1 ? '20' : '0'}px;">

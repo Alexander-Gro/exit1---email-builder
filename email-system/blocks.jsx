@@ -191,6 +191,37 @@ const BLOCKS = {
     },
   },
 
+  /* ── Simple list ── */
+  simplelist: {
+    type: 'simplelist', label: 'List', icon: '≡',
+    defaults: () => ({ listType: 'unordered', items: ['First item.', 'Second item.', 'Third item.'] }),
+    render: d => {
+      const Tag = d.listType === 'ordered' ? 'ol' : 'ul';
+      return (
+        <div className="e1-block e1-simplelist">
+          <Tag>
+            {(d.items || []).map((item, i) => <li key={i}>{item}</li>)}
+          </Tag>
+        </div>
+      );
+    },
+    inspector: (d, up) => {
+      const items = d.items || [];
+      return <>
+        <Field label="Type">
+          <Seg value={d.listType || 'unordered'} onChange={v => up({ listType: v })}
+            options={[{ value: 'unordered', label: 'Bullets' }, { value: 'ordered', label: 'Numbered' }]} />
+        </Field>
+        {items.map((item, i) => (
+          <Group key={i} title={`Item ${i + 1}`} onRemove={() => up({ items: items.filter((_, x) => x !== i) })}>
+            <Field><TI value={item} onChange={v => up({ items: items.map((it, x) => x === i ? v : it) })} /></Field>
+          </Group>
+        ))}
+        <AddBtn onClick={() => up({ items: [...items, 'New item.'] })}>+ Add item</AddBtn>
+      </>;
+    },
+  },
+
   /* ── Steps ── */
   steps: {
     type: 'steps', label: 'Step cards', icon: '☰',
@@ -1017,7 +1048,7 @@ const BLOCKS = {
 };
 
 const BLOCK_ORDER = [
-  'header', 'announcement', 'hero', 'body', 'alert', 'steps', 'checklist', 'todolist',
+  'header', 'announcement', 'hero', 'body', 'simplelist', 'alert', 'steps', 'checklist', 'todolist',
   'ctablock', 'twocol', 'stats', 'bigmetric', 'code', 'image', 'feature',
   'timeline', 'quote', 'testimonial', 'linklist', 'changelog', 'event',
   'plan', 'sociallinks', 'signature', 'divider', 'footer',

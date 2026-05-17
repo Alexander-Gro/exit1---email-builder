@@ -127,6 +127,21 @@
   color: var(--e1-text-3);
 }
 
+.e1-simplelist ul,
+.e1-simplelist ol {
+  margin: 0;
+  padding: 0 0 0 24px;
+}
+
+.e1-simplelist li {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--e1-text-2);
+  margin-bottom: 8px;
+}
+
+.e1-simplelist li:last-child { margin-bottom: 0; }
+
 /* ── Headings inside blocks ──────────────────────────────────────────── */
 .e1-h2 {
   font-size: 22px;
