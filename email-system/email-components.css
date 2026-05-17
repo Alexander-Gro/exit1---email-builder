@@ -861,6 +861,11 @@
 .e1-social-link {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: #ffffff;
+  border-radius: 50%;
   text-decoration: none;
 }
 

@@ -825,7 +825,7 @@ const BLOCKS = {
           <div className="e1-social-links">
             {(d.links || []).map((l, i) => (
               <a key={i} href={l.url || '#'} className="e1-social-link">
-                <img src={resolveIcon(l)} alt={l.platform} width="24" height="24" style={{ display: 'block', filter: 'invert(1)' }} />
+                <img src={resolveIcon(l)} alt={l.platform} width="20" height="20" style={{ display: 'block' }} />
               </a>
             ))}
           </div>

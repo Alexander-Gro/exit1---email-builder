@@ -609,7 +609,7 @@ const generateInlineHtml = draft => {
         return `
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
   <tr><td style="padding:18px ${P} 22px;">
-    ${links.map(l => `<a href="${xe(l.url || '#')}" style="display:inline-block;margin:0 8px 8px 0;text-decoration:none;"><img src="${xe(resolveIcon(l))}" alt="${xe(l.platform || '')}" width="32" height="32" style="display:block;border:0;filter:invert(1);" /></a>`).join('\n    ')}
+    ${links.map(l => `<a href="${xe(l.url || '#')}" style="display:inline-block;margin:0 8px 8px 0;text-decoration:none;background:#ffffff;border-radius:50%;width:36px;height:36px;line-height:36px;text-align:center;"><img src="${xe(resolveIcon(l))}" alt="${xe(l.platform || '')}" width="20" height="20" style="display:inline-block;vertical-align:middle;border:0;margin:8px;" /></a>`).join('\n    ')}
   </td></tr>
 </table>`;
       }
