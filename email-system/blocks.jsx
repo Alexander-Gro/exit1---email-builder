@@ -801,19 +801,18 @@ const BLOCKS = {
   /* ── Social links ── */
   sociallinks: {
     type: 'sociallinks', label: 'Social links', icon: '⇢',
-    defaults: () => ({ label: 'Follow along', links: [
-      { platform: 'Twitter / X', handle: '@exit1dev',  url: '#' },
-      { platform: 'GitHub',      handle: 'exit1-dev',  url: '#' },
-      { platform: 'LinkedIn',    handle: 'exit1.dev',  url: '#' },
+    defaults: () => ({ links: [
+      { platform: 'Facebook',  icon: 'https://storage.exit1.dev/images/facebook-icon.png',  url: '#' },
+      { platform: 'GitHub',    icon: 'https://storage.exit1.dev/images/github-icon.png',    url: '#' },
+      { platform: 'Instagram', icon: 'https://storage.exit1.dev/images/instagram-icon.png', url: '#' },
+      { platform: 'X',         icon: 'https://storage.exit1.dev/images/x-icon.png',         url: '#' },
     ]}),
     render: d => (
       <div className="e1-block">
-        {d.label && <p style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--e1-text-3)', marginBottom: 12 }}>{d.label}</p>}
         <div className="e1-social-links">
           {(d.links || []).map((l, i) => (
             <a key={i} href={l.url || '#'} className="e1-social-link">
-              <span style={{ color: 'var(--e1-accent)', fontWeight: 600, fontSize: 11 }}>{l.platform}</span>
-              <span style={{ color: 'var(--e1-text-3)', fontSize: 11 }}>{l.handle}</span>
+              <img src={l.icon} alt={l.platform} width="24" height="24" style={{ display: 'block' }} />
             </a>
           ))}
         </div>
@@ -823,15 +822,14 @@ const BLOCKS = {
       const links = d.links || [];
       const set = (i, patch) => { const a = [...links]; a[i] = { ...a[i], ...patch }; up({ links: a }); };
       return <>
-        <Field label="Label"><TI value={d.label} onChange={v => up({ label: v })} placeholder="Follow along" /></Field>
         {links.map((l, i) => (
           <Group key={i} title={`Link ${i + 1}`} onRemove={() => up({ links: links.filter((_, j) => j !== i) })}>
-            <Field label="Platform"><TI value={l.platform} onChange={v => set(i, { platform: v })} placeholder="Twitter / X" /></Field>
-            <Field label="Handle"><TI value={l.handle} onChange={v => set(i, { handle: v })} placeholder="@yourhandle" /></Field>
+            <Field label="Platform"><TI value={l.platform} onChange={v => set(i, { platform: v })} placeholder="X" /></Field>
+            <Field label="Icon URL"><TI value={l.icon} onChange={v => set(i, { icon: v })} placeholder="https://..." /></Field>
             <Field label="URL"><UI value={l.url} onChange={v => set(i, { url: v })} /></Field>
           </Group>
         ))}
-        <AddBtn onClick={() => up({ links: [...links, { platform: '', handle: '', url: '#' }] })}>+ Add link</AddBtn>
+        <AddBtn onClick={() => up({ links: [...links, { platform: '', icon: '', url: '#' }] })}>+ Add link</AddBtn>
       </>;
     },
   },

@@ -599,8 +599,7 @@ const generateInlineHtml = draft => {
         return `
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BG}" style="background:${BG};">
   <tr><td style="padding:18px ${P} 22px;">
-    ${d.label ? `<p style="margin:0 0 12px;padding:0;font-size:11px;font-weight:600;color:${T3};letter-spacing:0.08em;text-transform:uppercase;font-family:${FONT};">${xe(d.label)}</p>` : ''}
-    ${links.map((l, i) => `<a href="${xe(l.url || '#')}" style="display:inline-block;margin:0 8px 8px 0;padding:6px 12px;border-radius:99px;border:1px solid ${BORD};background:${CARD};text-decoration:none;white-space:nowrap;"><span style="font-size:11px;font-weight:600;color:${accent};font-family:${FONT};">${xe(l.platform)}</span>&nbsp;<span style="font-size:11px;color:${T3};font-family:${FONT};">${xe(l.handle)}</span></a>`).join('\n    ')}
+    ${links.map(l => `<a href="${xe(l.url || '#')}" style="display:inline-block;margin:0 8px 8px 0;text-decoration:none;"><img src="${xe(l.icon || '')}" alt="${xe(l.platform || '')}" width="32" height="32" style="display:block;border:0;" /></a>`).join('\n    ')}
   </td></tr>
 </table>`;
       }

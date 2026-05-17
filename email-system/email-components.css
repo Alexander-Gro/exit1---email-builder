@@ -855,20 +855,12 @@
 .e1-social-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 12px;
 }
 
 .e1-social-link {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  background: var(--e1-muted);
-  border: 1px solid var(--e1-border);
-  border-radius: 99px;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--e1-text-2);
   text-decoration: none;
 }
 
