@@ -318,7 +318,7 @@ const generateInlineHtml = draft => {
           </tr>
         </table>
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
-          <tr><td style="padding:18px;font-size:12px;color:#A8C4D8;line-height:1.65;font-family:${MONO};white-space:pre-wrap;word-break:break-word;mso-line-height-rule:exactly;">${xe(d.code).replace(/\n/g,'<br />')}</td></tr>
+          <tr><td style="padding:16px;font-size:12px;color:#A8C4D8;font-family:${MONO};">${xe(d.code).split('\n').map(line=>`<span style="display:block;line-height:1.65;white-space:pre;">${line||'&#8203;'}</span>`).join('')}</td></tr>
         </table>
       </td></tr>
     </table>
