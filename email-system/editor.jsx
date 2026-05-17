@@ -132,7 +132,7 @@ const generateInlineHtml = draft => {
     `<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${xe(href)}" style="height:36px;v-text-anchor:middle;width:200px;" arcsize="14%" strokecolor="${BORD}" fillcolor="${MUTED}"><w:anchorlock/><center style="color:${T1};font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:bold;">${xe(text)} &#8594;</center></v:roundrect><![endif]--><!--[if !mso]><!--><a href="${xe(href)}" style="display:inline-block;background:${MUTED};color:${T1};padding:9px 18px;border-radius:6px;border:1px solid ${BORD};font-size:13px;font-weight:500;text-decoration:none;font-family:${FONT};">${xe(text)} &#8594;</a><!--<![endif]-->`;
 
   const discordBtn = (href, text) =>
-    `<a href="${xe(href)}" style="display:inline-flex;align-items:center;gap:8px;background:#5865f2;color:#ffffff;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;font-family:${FONT};"><img src="https://storage.exit1.dev/images/Discord-Symbol-White.png" width="16" height="16" style="display:inline-block;vertical-align:middle;" alt="" />${xe(text)}</a>`;
+    `<a href="${xe(href)}" style="display:inline-flex;align-items:center;gap:8px;background:#5865f2;color:#ffffff;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;font-family:${FONT};"><img src="https://storage.exit1.dev/images/Discord-Symbol-White.png" width="16" height="16" style="display:inline-block;vertical-align:middle;object-fit:contain;" alt="" />${xe(text)}</a>`;
 
   const dotColor = t => t === 'down' ? '#E5534B' : t === 'warn' ? '#F59E0B' : '#3EB87A';
 

@@ -47,7 +47,7 @@ const BUTTON_STYLES = [
     value: 'discord',
     label: 'Discord',
     preview: <a style={{display:'inline-flex',alignItems:'center',gap:5,background:'#5865f2',color:'#fff',padding:'4px 10px',borderRadius:4,fontSize:11,fontWeight:600,textDecoration:'none'}}>
-      <img src="https://storage.exit1.dev/images/Discord-Symbol-White.png" style={{width:11,height:11,display:'block'}} alt="" />
+      <img src="https://storage.exit1.dev/images/Discord-Symbol-White.png" style={{width:11,height:11,display:'block',objectFit:'contain'}} alt="" />
       Button
     </a>
   },
