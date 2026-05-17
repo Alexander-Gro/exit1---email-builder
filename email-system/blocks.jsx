@@ -31,6 +31,52 @@ const Seg = ({ value, onChange, options }) => (
     ))}
   </div>
 );
+
+const BUTTON_STYLES = [
+  {
+    value: 'primary',
+    label: 'Filled',
+    preview: <a style={{display:'inline-block',background:'var(--e1-accent,#3F9081)',color:'#fff',padding:'4px 10px',borderRadius:4,fontSize:11,fontWeight:600,textDecoration:'none'}}>Button →</a>
+  },
+  {
+    value: 'ghost',
+    label: 'Ghost',
+    preview: <a style={{display:'inline-block',background:'transparent',color:'var(--e1-text-1)',padding:'4px 10px',borderRadius:4,fontSize:11,fontWeight:600,textDecoration:'none',border:'1px solid var(--e1-border)'}}>Button →</a>
+  },
+  {
+    value: 'discord',
+    label: 'Discord',
+    preview: <a style={{display:'inline-flex',alignItems:'center',gap:5,background:'#5865f2',color:'#fff',padding:'4px 10px',borderRadius:4,fontSize:11,fontWeight:600,textDecoration:'none'}}>
+      <img src="https://storage.exit1.dev/images/Discord-Symbol-White.png" style={{width:11,height:11,display:'block'}} alt="" />
+      Button
+    </a>
+  },
+];
+
+const StylePicker = ({ value, onChange }) => {
+  const [open, setOpen] = useState(false);
+  const current = BUTTON_STYLES.find(s => s.value === value) || BUTTON_STYLES[0];
+  return (
+    <div className="eb-style-picker">
+      <button className="eb-style-picker-trigger" onClick={() => setOpen(o => !o)}>
+        <span className="eb-style-picker-preview">{current.preview}</span>
+        <span className="eb-style-picker-label">{current.label}</span>
+        <span className="eb-style-picker-arrow">▾</span>
+      </button>
+      {open && (
+        <div className="eb-style-picker-menu">
+          {BUTTON_STYLES.map(s => (
+            <button key={s.value} className={`eb-style-picker-option${s.value === value ? ' active' : ''}`}
+              onClick={() => { onChange(s.value); setOpen(false); }}>
+              <span className="eb-style-picker-preview">{s.preview}</span>
+              <span className="eb-style-picker-label">{s.label}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 const Chk = ({ value, onChange, label }) => (
   <label className="eb-check">
     <input type="checkbox" checked={!!value} onChange={e => onChange(e.target.checked)} />
@@ -197,18 +243,23 @@ const BLOCKS = {
   ctablock: {
     type: 'ctablock', label: 'Button', icon: '▸',
     defaults: () => ({ text: 'Get started', url: '{{dashboard_url}}', style: 'primary' }),
-    render: d => (
-      <div className="e1-block e1-ctablock">
-        <a href={d.url || '#'} className={`e1-cta ${d.style === 'ghost' ? 'e1-cta-ghost' : 'e1-cta-primary'}`}>{d.text} →</a>
-      </div>
-    ),
+    render: d => {
+      const cls = d.style === 'ghost' ? 'e1-cta-ghost' : d.style === 'discord' ? 'e1-cta-discord' : 'e1-cta-primary';
+      return (
+        <div className="e1-block e1-ctablock">
+          <a href={d.url || '#'} className={`e1-cta ${cls}`}>
+            {d.style === 'discord' && <img src="https://storage.exit1.dev/images/Discord-Symbol-White.png" className="e1-cta-discord-icon" alt="" />}
+            {d.text}{d.style !== 'discord' ? ' →' : ''}
+          </a>
+        </div>
+      );
+    },
     inspector: (d, up) => (
       <>
         <Field label="Button text"><TI value={d.text} onChange={v => up({ text: v })} /></Field>
         <Field label="URL"><UI value={d.url} onChange={v => up({ url: v })} /></Field>
         <Field label="Style">
-          <Seg value={d.style || 'primary'} onChange={v => up({ style: v })}
-            options={[{ value: 'primary', label: 'Filled' }, { value: 'ghost', label: 'Ghost' }]} />
+          <StylePicker value={d.style || 'primary'} onChange={v => up({ style: v })} />
         </Field>
       </>
     ),

@@ -389,6 +389,95 @@ html, body, #app {
   font-weight: 600;
 }
 
+/* Style picker dropdown */
+.eb-style-picker {
+  position: relative;
+  width: 100%;
+}
+
+.eb-style-picker-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 10px;
+  background: var(--e1-muted);
+  border: 1px solid var(--e1-border);
+  border-radius: var(--e1-radius);
+  cursor: pointer;
+  color: var(--e1-text-1);
+  font-family: var(--e1-font);
+  transition: border-color var(--e1-transition);
+}
+
+.eb-style-picker-trigger:hover {
+  border-color: var(--e1-text-3);
+}
+
+.eb-style-picker-label {
+  flex: 1;
+  text-align: left;
+  font-size: var(--e1-fs-xs);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.eb-style-picker-arrow {
+  font-size: 10px;
+  color: var(--e1-text-2);
+}
+
+.eb-style-picker-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--e1-surface, var(--e1-muted));
+  border: 1px solid var(--e1-border);
+  border-radius: var(--e1-radius);
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.eb-style-picker-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--e1-border);
+  cursor: pointer;
+  color: var(--e1-text-1);
+  font-family: var(--e1-font);
+  font-size: var(--e1-fs-xs);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  transition: background var(--e1-transition);
+}
+
+.eb-style-picker-option:last-child {
+  border-bottom: none;
+}
+
+.eb-style-picker-option:hover {
+  background: var(--e1-hover);
+}
+
+.eb-style-picker-option.active {
+  background: var(--e1-primary);
+  color: var(--e1-primary-fg);
+}
+
+.eb-style-picker-preview {
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
 /* Checkbox */
 .eb-check {
   display: flex;
